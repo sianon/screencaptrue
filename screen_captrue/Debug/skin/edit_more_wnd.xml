@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window size="280,170" caption="0,0,0,30">
+  <Font name="微软雅黑" size="16" bold="true" italic="false" />
+  <Font name="微软雅黑" size="12" bold="false" italic="false" default="true" />
+  <VerticalLayout bkcolor="#ff29b8cc" inset="2,2,2,2">
+    <HorizontalLayout height="28" inset="0,0,0,2">
+      <Label text="编辑" font="0" align="center" />
+      <Button name="closebtn" width="26" text="x" font="0" hotbkcolor="#ffcc0000" />
+    </HorizontalLayout>
+    <VerticalLayout bkcolor="#fffafafa" inset="10,10,10,10">
+      <VerticalLayout bkcolor="#fff3f3f3" inset="10,7,10,10">
+        <HorizontalLayout height="30" inset="5,2,5,2">
+          <Label width="60" text="IP地址" />
+          <IpControl name="edit_ipaddr" />
+        </HorizontalLayout>
+        <HorizontalLayout height="30" inset="5,2,5,2">
+          <Label width="60" text="默认网关" />
+          <IpControl name="edit_netmask" />
+        </HorizontalLayout>
+        <Control />
+        <HorizontalLayout height="25">
+          <Control />
+          <Button name="OK_btn" width="60" text="确定" hottextcolor="#ffff0000" pushedtextcolor="#ff000000" bkcolor="#ffe1e1e1" bordercolor="#ffaaaaaa" bordersize="1" />
+          <Control width="20" />
+          <Button name="closebtn" width="60" text="取消" hottextcolor="#ffff0000" pushedtextcolor="#ff000000" bkcolor="#ffe1e1e1" bordercolor="#ffaaaaaa" bordersize="1" />
+          <Control />
+        </HorizontalLayout>
+      </VerticalLayout>
+    </VerticalLayout>
+  </VerticalLayout>
+</Window>

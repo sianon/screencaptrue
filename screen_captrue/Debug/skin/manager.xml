@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window size="320,520" caption="0,0,0,30">
+  <Font name="微软雅黑" size="20" bold="true" italic="false" />
+  <Font name="微软雅黑" size="12" bold="false" italic="false" default="true" />
+  <VerticalLayout bkcolor="#ff29b8cc" inset="2,2,2,2">
+    <HorizontalLayout height="28" inset="0,0,0,2">
+      <Label width="26" bkimage="res\LOGO.png"/>
+      <Control width="5" />
+      <Label text="IpFill" />
+      <Button name="minbtn" width="26" text="-" font="0" textpadding="0,8,0,0" hotbkcolor="#ffcc0000" />
+      <Button name="closebtn" width="26" text="x" font="0" hotbkcolor="#ffcc0000" />
+    </HorizontalLayout>
+    <VerticalLayout bkcolor="#fff0f0f0" inset="10,20,10,10">
+      <VerticalLayout height="95" inset="0,10,0,0">
+        <VerticalLayout bordercolor="#ffaaaaaa" bordersize="1" inset="20,15,20,10">
+          <HorizontalLayout height="25">
+            <Label width="30" text="方案" />
+            <Control width="10" />
+            <Combo name="play_list" itemtextpadding="10,0,10,0" bordercolor="#ffcccccc" bordersize="1" normalimage="file='res\combo.png' source='0,0,216,32'">
+              <ListLabelElement text="Auto" />
+            </Combo>
+          </HorizontalLayout>
+          <Control height="10" />
+          <HorizontalLayout height="25">
+            <Control />
+            <Button name="del_play_btn" width="60" text="删除" hottextcolor="#ffff0000" pushedtextcolor="#ff000000" bkcolor="#ffe1e1e1" bordercolor="#ffaaaaaa" bordersize="1" />
+            <Control width="10" />
+            <Button name="start_play_btn" width="60" text="启用" hottextcolor="#ffff0000" pushedtextcolor="#ff000000" bkcolor="#ffe1e1e1" bordercolor="#ffaaaaaa" bordersize="1" />
+          </HorizontalLayout>
+        </VerticalLayout>
+        <Label width="65" text="方案选择" align="center" float="true" pos="5,0,0,20" bkcolor="#fff0f0f0" />
+      </VerticalLayout>
+      <Control height="10" />
+      <VerticalLayout inset="0,10,0,0">
+        <VerticalLayout bordercolor="#ffaaaaaa" bordersize="1" inset="20,15,20,10">
+          <HorizontalLayout height="25">
+            <Label width="50" text="网络名称" />
+            <Control width="10" />
+            <Combo name="net_name_list" itemtextpadding="10,0,10,0" bordercolor="#ffcccccc" bordersize="1" normalimage="file='res\combo.png' source='0,0,216,32'" disabledimage="file='res\combo.png' source='0,32,216,64'" />
+          </HorizontalLayout>
+          <Control height="10" />
+          <Label height="1" bkcolor="#ffaaaaaa" />
+          <Control height="10" />
+          <Label width="70" text="IP信息" />
+          <HorizontalLayout height="30" inset="20,2,0,2">
+            <Label width="60" text="IP地址" />
+            <IpControl name="ip_address" />
+          </HorizontalLayout>
+          <HorizontalLayout height="30" inset="20,2,0,2">
+            <Label width="60" text="子网掩码" />
+            <IpControl name="netmask" />
+          </HorizontalLayout>
+          <HorizontalLayout height="30" inset="20,2,0,2">
+            <Label width="60" text="默认网关" />
+            <IpControl name="gateway" />
+          </HorizontalLayout>
+          <Control height="15" />
+          <Label width="87" text="DNS信息" />
+          <HorizontalLayout height="30" inset="20,2,0,2">
+            <Label width="60" text="首选DNS" />
+            <IpControl name="firstDNS" />
+          </HorizontalLayout>
+          <HorizontalLayout height="30" inset="20,2,0,2">
+            <Label width="60" text="备选DNS" />
+            <IpControl name="secondDNS" />
+          </HorizontalLayout>
+          <Control />
+          <HorizontalLayout height="20">
+            <Button name="test_btn" width="45" text="测试" visible="false" hottextcolor="#ffff0000" pushedtextcolor="#ff000000" bkcolor="#ffe1e1e1" bordercolor="#ffaaaaaa" bordersize="1" />
+            <Control />
+            <Button name="advanced_btn" width="45" text="高级" textcolor="#ff0000ff" hottextcolor="#ffff0000" pushedtextcolor="#ff000000" bkcolor="#ffe1e1e1" bordercolor="#ffaaaaaa" bordersize="1" />
+          </HorizontalLayout>
+          <Control />
+          <Label height="1" bkcolor="#ffaaaaaa" />
+          <Control />
+          <HorizontalLayout height="25" inset="15,0,15,0">
+            <Button name="edit_play_btn" text="编辑" hottextcolor="#ffff0000" pushedtextcolor="#ff000000" bkcolor="#ffe1e1e1" bordercolor="#ffaaaaaa" bordersize="1" />
+            <Button name="update_play_btn" text="保存" visible="false" hottextcolor="#ffff0000" pushedtextcolor="#ff000000" bkcolor="#ffe1e1e1" bordercolor="#ffaaaaaa" bordersize="1" />
+            <Control width="15" />
+            <Button name="add_play_btn" text="存为新方案" hottextcolor="#ffff0000" pushedtextcolor="#ff000000" bkcolor="#ffe1e1e1" bordercolor="#ffaaaaaa" bordersize="1" />
+          </HorizontalLayout>
+        </VerticalLayout>
+        <Label width="65" text="网络属性" align="center" float="true" pos="5,0,0,20" bkcolor="#fff0f0f0" />
+      </VerticalLayout>
+    </VerticalLayout>
+  </VerticalLayout>
+</Window>

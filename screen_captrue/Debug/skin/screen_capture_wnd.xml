@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window size="300,220" roundcorner="5,5" caption="0,0,0,25">
+  <Font name="宋体" size="20" />
+  <Font name="宋体" size="20" bold="true" />
+  <Font name="宋体" size="15" />
+  <Font name="宋体" size="15" bold="true" />
+  <Font name="宋体" size="12" />
+  <Font name="宋体" size="12" bold="true" defult="true"/>
+  <VerticalLayout >
+    <!-- Title -->
+    <HorizontalLayout height="35" bkcolor="#FF5a5a5a" inset="5,0,5,0">	
+      <Label text="屏幕输出" font="3" width="150"/>
+      <Control />
+      <Button name="minbtn" tooltip="最小化" width="30" bkimage="file='res\sys_min.png' source='0,44, 23,66'" hotimage="file='res\sys_min.png' source='0,22,23,44'" pushedimage="file='res\sys_min.png' source='0,0,23,22'"/> 
+      <Button name="closebtn" tooltip="退出" width="30" bkimage="file='res\sys_close.png' source='0,44, 23,66'" hotimage="file='res\sys_close.png' source='0,22,23,44'" pushedimage="file='res\sys_close.png' source='0,0,23,22'" />
+    </HorizontalLayout>
+
+    <!-- 主体 -->
+    <HorizontalLayout name="" bkcolor="#fff0f0f0">
+      <Control />
+      <VerticalLayout childpadding="5" width="260" > 
+        <Control height="25" />
+        <HorizontalLayout  height="20" >
+          <Control />
+          <Label text="帧率:fps" width="50" />
+          <Edit name="screen_fps_edit" width="40" numberonly="true" maxchar="2" text="15" bordercolor="#ffaaaaaa" bordersize="1" />
+          <Control width="20" />
+          <Label text="画质:0-1" width="55" />
+          <Edit name="screen_quality" width="40" maxchar="4" text="0.80" bordercolor="#ffaaaaaa" bordersize="1" />
+          <Control />
+        </HorizontalLayout>
+        <Control height="10" />
+        <HorizontalLayout height="30" childpadding="30" >
+          <Control />
+          <RadioBox name="radio_serve" text="Serve" textpadding="25,7,30,10" selected="true" width="100" bkimage="file='res\radio_1.png' source='0,0,20,19' dest='0,3,20,22'" selectedimage="file='res\radio_2.png' source='0,0,20,19' dest='0,3,20,22'" group="broadcast_trans_mode_group" />
+          <RadioBox name="radio_client" text="Client" textpadding="25,7,30,10" width="100" bkimage="file='res\radio_1.png' source='0,0,20,19' dest='0,3,20,22'" selectedimage="file='res\radio_2.png' source='0,0,20,19' dest='0,3,20,22'" group="broadcast_trans_mode_group" />
+          <Control />
+        </HorizontalLayout>
+        <Control height="5" />
+        <HorizontalLayout inset="20,8,20">
+          <Control />
+          <Button name="Cancel" text="Cancel" height="25" width="70" hottextcolor="#ffff0000" pushedtextcolor="#ff000000" bkcolor="#ffe1e1e1" bordercolor="#ffaaaaaa" bordersize="1" />
+          <Control width="50" />
+          <Button name="ok" text="OK" height="25" width="70" hottextcolor="#ffff0000" pushedtextcolor="#ff000000" bkcolor="#ffe1e1e1" bordercolor="#ffaaaaaa" bordersize="1" />
+          <Control />
+        </HorizontalLayout>
+      </VerticalLayout> 
+      <Control />
+    </HorizontalLayout>
+  </VerticalLayout>
+</Window>
