@@ -112,8 +112,9 @@
     <ClCompile Include="base_window.cpp" />
     <ClCompile Include="ip_edit_ui.cpp" />
     <ClCompile Include="ip_manager.cpp" />
+    <ClCompile Include="ivga.cpp" />
     <ClCompile Include="res_singleton.cpp" />
-    <ClCompile Include="screen_wnd.cpp" />
+    <ClCompile Include="screen_capture.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="xml_manager.cpp" />
   </ItemGroup>
