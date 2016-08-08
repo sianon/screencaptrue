@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "screen_captrue.h"
 #include "ip_manager.h"
-#include <vector>
+#include "manager.h"
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -10,7 +10,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
-
+	/*
 	CPaintManagerUI::SetInstance(hInstance);
 	CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath() + _T("skin"));
 
@@ -23,6 +23,14 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	delete screen_capture_wnd;
 	//Initialize global strings
+	*/
+	CPaintManagerUI::SetInstance(hInstance);
+	CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath() + _T("skin_1"));	
+
+	Manager manager;
+	manager.Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
+	manager.CenterWindow();
+	manager.ShowModal();
 
 	return 0;
 }

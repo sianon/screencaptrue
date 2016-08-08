@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<StringTable>
+	<String id="system_name" text="iVGA" />
+	<String id="option" text="选项" />
+	<String id="serve_setup" text="服务设置" />
+	<String id="AVS" text="音视频" />
+	<String id="aboutme" text="帮助" />
+	<String id="auto_start" text="开机启动" />
+	<String id="min_start" text="最小化形式启动" />
+	<String id="live" text="直播" />
+	<String id="live_and_videos" text="直播+录像" />
+	<String id="hotkey_explain" text="快捷键说明：Ctrl+Z 开始直播   Ctrl+X 停止" />
+	<String id="live_service" text="直播服务" />
+	<String id="address" text="地址" />
+	<String id="plug_flow" text="推流" />
+	<String id="videos" text="录像" />
+	<String id="browse" text="浏览" />
+	<String id="frame_rate" text="帧率" />
+	<String id="quality" text="品质" />
+	<String id="screen" text="屏幕" />
+	<String id="video" text="视频" />
+	<String id="set_up" text="设置" />
+	<String id="sound_for_play_and_MIC" text="播放+麦声音" />
+	<String id="sound_for_MIC" text="麦声音" />
+</StringTable>

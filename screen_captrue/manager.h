@@ -1,0 +1,58 @@
+#pragma once
+#include "Resource.h"
+#include "base_window.h"
+#include "vlc/vlc.h"
+
+#define WM_SHOWTASK (WM_USER + 10)
+
+class Manager : public BaseWindow
+{
+public:
+	Manager();
+	~Manager();
+
+	BEGIN_DUIMSG_MAP(Manager)
+		DUIMSG_HANDLER(WM_SHOWTASK, OnTray)
+	END_DUIMSG_MAP()
+
+	BEGIN_DUINOTIFY_MAP(Manager)
+		DUINOTIFY_HANDLER(_T("minbtn"), DUINOTIFY_CLICK, OnClickSysBtn)
+		DUINOTIFY_HANDLER(_T("closebtn"), DUINOTIFY_CLICK, OnClickSysBtn)
+		DUINOTIFY_HANDLER(_T("begin_btn"), DUINOTIFY_CLICK, OnClickBeginBtn)
+		DUINOTIFY_HANDLER(_T("begin_btn"), DUINOTIFY_CLICK, OnClickEndBtn)
+	END_DUINOTIFY_MAP()
+
+	virtual CDuiString GetSkinFile() override { return _T("manager.xml"); }
+	virtual LPCTSTR GetWindowClassName(void) const override { return _T("Manager"); }
+
+public:
+	virtual LRESULT OnInit() override;
+
+private:
+	LRESULT OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
+
+private:
+	void OnClickSysBtn(TNotifyUI &msg, bool &handled);
+	void OnClickBeginBtn(TNotifyUI &msg, bool &handled);
+	void OnClickEndBtn(TNotifyUI &msg, bool &handled);
+
+private:
+	void ScreenServe();
+	void ScreenPush();
+	void OnExit();
+	void Play();
+	void ToTray();
+	void SetAutoRun(bool bautorun);
+
+private:
+	bool is_start_serve_;
+	bool is_start_client_;
+	INT screen_fps_;
+	INT screen_fps_old_;
+	CDuiString screen_quality_;
+	CDuiString screen_quality_old_;
+	libvlc_instance_t* vlc_;
+	const char* media_name_;
+	CDuiString dir_name_;
+	CDuiString port_;
+};

@@ -105,6 +105,7 @@
     <ClInclude Include="base_window.h" />
     <ClInclude Include="ip_edit_ui.h" />
     <ClInclude Include="ip_manager.h" />
+    <ClInclude Include="manager.h" />
     <ClInclude Include="native_control_ui.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="res_singleton.h" />
@@ -121,6 +122,7 @@
     <ClCompile Include="ip_edit_ui.cpp" />
     <ClCompile Include="ip_manager.cpp" />
     <ClCompile Include="ivga.cpp" />
+    <ClCompile Include="manager.cpp" />
     <ClCompile Include="native_control_ui.cpp" />
     <ClCompile Include="res_singleton.cpp" />
     <ClCompile Include="screen_capture.cpp" />
