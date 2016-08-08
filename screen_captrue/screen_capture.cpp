@@ -63,7 +63,7 @@ void ScreenCapture::OnUserClick(const TNotifyUI& msg)
 		}
 	}
 	else if (sCtrlName == _T("Cancel")) {
-		SetAutoRun(true);
+		SetAutoRun(false);
 		SendMessage(WM_SYSCOMMAND, SC_MINIMIZE, 0);
 	}
 }

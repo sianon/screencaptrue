@@ -47,7 +47,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProJectDir)../third_party/duilib;$(ProJectDir)/libvlc_include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProJectDir)../third_party/duilib;$(ProJectDir)/libvlc_include;$(ProJectDir)../third_party/pugixml;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProJectDir)../third_party/libs;$(ProJectDir)/libvlc_lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(ProJectDir)\Debug</OutDir>
   </PropertyGroup>
@@ -92,12 +92,20 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="screen_captrue.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="screen_captrue.ico" />
+    <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="add_slution_wnd.h" />
     <ClInclude Include="advanced_parent.h" />
     <ClInclude Include="advanced_wnd.h" />
     <ClInclude Include="base_window.h" />
     <ClInclude Include="ip_edit_ui.h" />
     <ClInclude Include="ip_manager.h" />
+    <ClInclude Include="native_control_ui.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="res_singleton.h" />
     <ClInclude Include="screen_captrue.h" />
@@ -113,17 +121,11 @@
     <ClCompile Include="ip_edit_ui.cpp" />
     <ClCompile Include="ip_manager.cpp" />
     <ClCompile Include="ivga.cpp" />
+    <ClCompile Include="native_control_ui.cpp" />
     <ClCompile Include="res_singleton.cpp" />
     <ClCompile Include="screen_capture.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="xml_manager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="screen_captrue.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="screen_captrue.ico" />
-    <Image Include="small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
