@@ -2,8 +2,9 @@
 #include "Resource.h"
 #include "base_window.h"
 #include "vlc/vlc.h"
+#include <vector>
 
-#define WM_SHOWTASK (WM_USER + 10)
+#define WM_SHOWTASK_1 (WM_USER + 10)
 
 class Manager : public BaseWindow
 {
@@ -12,14 +13,15 @@ public:
 	~Manager();
 
 	BEGIN_DUIMSG_MAP(Manager)
-		DUIMSG_HANDLER(WM_SHOWTASK, OnTray)
+		DUIMSG_HANDLER(WM_SHOWTASK_1, OnTray)
 	END_DUIMSG_MAP()
 
 	BEGIN_DUINOTIFY_MAP(Manager)
 		DUINOTIFY_HANDLER(_T("minbtn"), DUINOTIFY_CLICK, OnClickSysBtn)
 		DUINOTIFY_HANDLER(_T("closebtn"), DUINOTIFY_CLICK, OnClickSysBtn)
 		DUINOTIFY_HANDLER(_T("begin_btn"), DUINOTIFY_CLICK, OnClickBeginBtn)
-		DUINOTIFY_HANDLER(_T("begin_btn"), DUINOTIFY_CLICK, OnClickEndBtn)
+		DUINOTIFY_HANDLER(_T("end_btn"), DUINOTIFY_CLICK, OnClickEndBtn)
+		DUINOTIFY_TYPE_HANDLER(DUINOTIFY_SELECTCHANGED, OnSelectChanged)
 	END_DUINOTIFY_MAP()
 
 	virtual CDuiString GetSkinFile() override { return _T("manager.xml"); }
@@ -35,6 +37,7 @@ private:
 	void OnClickSysBtn(TNotifyUI &msg, bool &handled);
 	void OnClickBeginBtn(TNotifyUI &msg, bool &handled);
 	void OnClickEndBtn(TNotifyUI &msg, bool &handled);
+	void OnSelectChanged(TNotifyUI &msg, bool &handled);
 
 private:
 	void ScreenServe();
@@ -43,6 +46,7 @@ private:
 	void Play();
 	void ToTray();
 	void SetAutoRun(bool bautorun);
+	void GetLocalIPAddr(vector<wstring> & id_addr);
 
 private:
 	bool is_start_serve_;

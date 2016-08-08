@@ -72,7 +72,7 @@
               <HorizontalLayout height="25">
                 <Label text="#address" width="35" />
                 <Container height="25">
-                  <ComboBox name="" />
+                  <ComboBox name="live_address" tooltip="直播服务器地址" />
                   <Control mouse="false" float="true" pos="-26,8,-15,19" bkimage="file='res\triangle.png'" />
                 </Container>
                 <Control width="5" />
