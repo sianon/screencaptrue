@@ -14,6 +14,7 @@ Manager::Manager()
 	, media_name_("screen")
 	, dir_name_(L"default")
 	, port_(L"554")
+	, ip_push_(L"")
 {
 }
 
@@ -49,7 +50,7 @@ LRESULT Manager::OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled
 		break;
 		case WM_LBUTTONDBLCLK:
 		{
-			this->ShowWindow(SW_SHOW);
+			this->ShowWindow(true);
 		}
 		break;
 	}
@@ -125,18 +126,34 @@ void Manager::ScreenServe()
 }
 
 void Manager::ScreenPush()
-{
+{	
 	if (is_start_serve_) {
 		OnExit();
 	}
 
 	is_start_serve_ = false;
 
-	const char *sout = "#transcode{vcodec=mp4v,vb=32}:duplicate{dst=rtp{access=rtsp,dst=18.18.8.5:554}}";
-	const char* url = "Screen://";
+	string screen_fps("--screen-fps=");
+	char fps[3];
+	_itoa_s(screen_fps_, fps, 3, 10);
+	screen_fps.append(fps);
 
-	vlc_ = libvlc_new(0, NULL);
-	libvlc_vlm_add_broadcast(vlc_, media_name_, url, sout, 0, NULL, true, false);
+	const char * const argv[] = {
+		screen_fps.c_str(),
+	};
+
+	const char* url = "Screen://";
+	wstring first_part = L"#transcode{vcodec=mp4v,acodec=none,vb=16,threads=2,scale=";
+	wstring scale = screen_quality_.GetData();
+	wstring third_part = L"}:duplicate{dst=rtp{sdp=rtsp://";
+	wstring ip_push = ip_push_.GetData();
+	wstring double_dot = L":";
+	wstring port = port_.GetData();
+	wstring last_part = dir_name_.GetData();
+	wstring sout = first_part + scale + third_part + ip_push + double_dot + port + L"/" + last_part + L"}}";
+
+	vlc_ = libvlc_new(sizeof(argv) / sizeof(argv[0]), argv);
+	libvlc_vlm_add_broadcast(vlc_, media_name_, url, CW2A(sout.c_str()), 0, NULL, true, false);
 	libvlc_vlm_play_media(vlc_, media_name_);
 }
 
@@ -165,20 +182,9 @@ void Manager::Play()
 	wstring port = port_.GetData();
 	wstring last_part = dir_name_.GetData();
 	wstring sout = first_part + scale + third_part + port + L"/" + last_part + L"}}";
-	//wstring sout = L"#transcode{vcodec=mp4v,acodec=none,vb=16,threads=2, scale=0.8}:duplicate{dst=rtp{sdp=rtsp://:554/screen}}";
-
-	wstring::size_type scint = sout.find(_T("/screen"));
-	wstring::size_type xc = sout.find(L"scale");
-
-	//wstring screen_quality = screen_quality_;
-	//sout.erase(xc + 6, 3);
-	//sout.insert(xc + 6, screen_quality_);
-
-	std::string str_quality(sout.length(), L'');
-	std::copy(sout.begin(), sout.end(), str_quality.begin());
 
 	vlc_ = libvlc_new(sizeof(argv) / sizeof(argv[0]), argv);
-	libvlc_vlm_add_broadcast(vlc_, media_name_, url, str_quality.c_str(), 0, NULL, true, false);
+	libvlc_vlm_add_broadcast(vlc_, media_name_, url, CW2A(sout.c_str()), 0, NULL, true, false);
 	libvlc_vlm_play_media(vlc_, media_name_);
 }
 
