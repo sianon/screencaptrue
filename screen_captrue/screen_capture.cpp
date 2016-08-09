@@ -235,7 +235,7 @@ void ScreenCapture::ToTray()
 	wnd_to_tray.hWnd = this->m_hWnd;
 	wnd_to_tray.uID = IDR_MAINFRAME;
 	wnd_to_tray.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
-	wnd_to_tray.uCallbackMessage = WM_SHOWTASK_1;
+	wnd_to_tray.uCallbackMessage = WM_SHOWTASK_2;
 	wnd_to_tray.hIcon = (HICON)LoadImage(NULL, L"screen_captrue.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
 
 	wcscpy_s(wnd_to_tray.szTip, L"成都天狐威视IVGA");

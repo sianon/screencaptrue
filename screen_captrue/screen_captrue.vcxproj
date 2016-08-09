@@ -49,7 +49,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProJectDir)../third_party/duilib;$(ProJectDir)/libvlc_include;$(ProJectDir)../third_party/pugixml;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProJectDir)../third_party/libs;$(ProJectDir)/libvlc_lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(ProJectDir)\Debug</OutDir>
+    <OutDir>$(ProJectDir)\Debug\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -12,7 +12,7 @@
 #include <atlconv.h>
 #include <atlbase.h>
 
-#define WM_SHOWTASK_1 (WM_USER + 1)
+#define WM_SHOWTASK_2 (WM_USER + 1)
 
 class ScreenCapture
 	: public BaseWindow
@@ -22,7 +22,7 @@ public:
 	~ScreenCapture();
 
 	BEGIN_DUIMSG_MAP(ScreenCapture)
-		DUIMSG_HANDLER(WM_SHOWTASK_1, OnTray)
+		DUIMSG_HANDLER(WM_SHOWTASK_2, OnTray)
 	END_DUIMSG_MAP()
 
 	void ScreenServe();

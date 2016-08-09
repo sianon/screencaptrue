@@ -32,6 +32,8 @@ CDuiString _NETSTRUCT::GetVar(LPCTSTR name)
 		return firstDNS;
 	else if (name == _T("SecondDNS"))
 		return secondDNS;
+	else
+		return nullptr;
 }
 
 XmlManager::XmlManager()
