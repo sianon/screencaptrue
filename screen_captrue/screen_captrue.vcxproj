@@ -102,10 +102,13 @@
     <ClInclude Include="add_slution_wnd.h" />
     <ClInclude Include="advanced_parent.h" />
     <ClInclude Include="advanced_wnd.h" />
+    <ClInclude Include="audio_adjust_panel.h" />
+    <ClInclude Include="auto_hide_wnd.h" />
     <ClInclude Include="base_window.h" />
     <ClInclude Include="ip_edit_ui.h" />
     <ClInclude Include="ip_manager.h" />
     <ClInclude Include="manager.h" />
+    <ClInclude Include="msg_head.h" />
     <ClInclude Include="native_control_ui.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="res_singleton.h" />
@@ -118,6 +121,7 @@
     <ClCompile Include="add_slution_wnd.cpp" />
     <ClCompile Include="advanced_parent.cpp" />
     <ClCompile Include="advanced_wnd.cpp" />
+    <ClCompile Include="audio_adjust_panel.cpp" />
     <ClCompile Include="base_window.cpp" />
     <ClCompile Include="ip_edit_ui.cpp" />
     <ClCompile Include="ip_manager.cpp" />
