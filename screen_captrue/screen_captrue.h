@@ -9,6 +9,8 @@
 #include "advanced_wnd.h"
 #include "advanced_parent.h"
 #include "xml_manager.h"
+#include <atlconv.h>
+#include <atlbase.h>
 
 #define WM_SHOWTASK_1 (WM_USER + 1)
 

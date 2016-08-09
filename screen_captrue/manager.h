@@ -1,9 +1,11 @@
 #pragma once
+
 #include "Resource.h"
 #include "base_window.h"
 #include "vlc/vlc.h"
 #include "audio_adjust_panel.h"
 #include "msg_head.h"
+#include <atlbase.h>
 #include <vector>
 
 class Manager : public BaseWindow
@@ -55,6 +57,7 @@ private:
 	bool is_start_client_;
 	INT screen_fps_;
 	INT screen_fps_old_;
+	CDuiString ip_push_;
 	CDuiString screen_quality_;
 	CDuiString screen_quality_old_;
 	libvlc_instance_t* vlc_;

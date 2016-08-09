@@ -178,20 +178,9 @@ void ScreenCapture::Play()
 	wstring port = port_;
 	wstring last_part = dir_name_;
 	wstring sout = first_part + scale + third_part + port + L"/" + last_part + L"}}";
-	//wstring sout = L"#transcode{vcodec=mp4v,acodec=none,vb=16,threads=2, scale=0.8}:duplicate{dst=rtp{sdp=rtsp://:554/screen}}";
-
-	wstring::size_type scint = sout.find(_T("/screen"));
-	wstring::size_type xc = sout.find(L"scale");
-
-	//wstring screen_quality = screen_quality_;
-	//sout.erase(xc + 6, 3);
-	//sout.insert(xc + 6, screen_quality_);
-
-	std::string str_quality(sout.length(), L'');
-	std::copy(sout.begin(), sout.end(), str_quality.begin());
 
 	vlc_ = libvlc_new(sizeof(argv) / sizeof(argv[0]), argv);
-	libvlc_vlm_add_broadcast(vlc_, media_name_, url, str_quality.c_str(), 0, NULL, true, false);
+	libvlc_vlm_add_broadcast(vlc_, media_name_, url, CW2A(sout.c_str()), 0, NULL, true, false);
 	libvlc_vlm_play_media(vlc_, media_name_);
 }
 
@@ -276,7 +265,7 @@ LRESULT ScreenCapture::OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHa
 		break;
 	case WM_LBUTTONDBLCLK:
 	{
-		this->ShowWindow(SW_SHOW);
+		this->ShowWindow(true);
 	}
 		break;
 	}
