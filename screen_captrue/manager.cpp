@@ -1,8 +1,10 @@
 #include "manager.h"
 #include <map>
 #include <WinSock2.h>
+#include <IPHlpApi.h>
+#include <sstream>
 
-#pragma comment(lib,"ws2_32.lib")
+#pragma comment(lib,"Iphlpapi.lib")
 
 Manager::Manager()
 	: is_start_serve_(true)
@@ -106,6 +108,8 @@ void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 
 void Manager::OnClickEndBtn(TNotifyUI & msg, bool & handled)
 {
+	//std::vector<std::wstring> ip_addr;
+	//GetLocalIPAddr(ip_addr);
 }
 
 void Manager::OnSelectChanged(TNotifyUI & msg, bool & handled)
@@ -238,5 +242,29 @@ void Manager::SetAutoRun(bool bautorun)
 
 void Manager::GetLocalIPAddr(vector<wstring> & ip_addr)
 {
-	
+	PIP_ADAPTER_INFO pIpAdapterInfo = new IP_ADAPTER_INFO();
+	unsigned long stSize = sizeof(IP_ADAPTER_INFO);
+	int nRel = GetAdaptersInfo(pIpAdapterInfo, &stSize);	// 这里，stSize 既是输入量也是输出量；
+	if (ERROR_BUFFER_OVERFLOW == nRel) {	
+		// ERROR_BUFFER_OVERFLOW 表示 传递给 GetAdaptersInfo 的内存空间不够，同时传出的 stSize 表示所需的空间大小
+		delete pIpAdapterInfo;	// 释放掉，重新分配！
+		pIpAdapterInfo = (PIP_ADAPTER_INFO) new BYTE[stSize];
+		nRel = GetAdaptersInfo(pIpAdapterInfo, &stSize);	// 利用传出的新空间大小值，重新填充 pIpAdapterInfo
+	}
+	std::wostringstream oss;
+	if (ERROR_SUCCESS == nRel) {
+		while (pIpAdapterInfo)
+		{
+			auto iter = &pIpAdapterInfo->IpAddressList;
+			while (iter)
+			{
+				oss.str(L"");
+				oss << iter->IpAddress.String;
+				if (_tccmp(L"0.0.0.0", oss.str().c_str()) != 0)
+					ip_addr.push_back(oss.str());
+				iter = iter->Next;
+			}
+			pIpAdapterInfo = pIpAdapterInfo->Next;
+		}
+	}
 }
