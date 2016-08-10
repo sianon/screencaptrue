@@ -31,22 +31,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="add_slution_wnd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="advanced_parent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="advanced_wnd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="base_window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ip_edit_ui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ip_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="native_control_ui.h">
@@ -58,16 +43,10 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="screen_captrue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="xml_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="manager.h">
@@ -84,22 +63,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="add_slution_wnd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="advanced_parent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="advanced_wnd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="base_window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ip_edit_ui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ip_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ivga.cpp">
@@ -111,13 +75,7 @@
     <ClCompile Include="res_singleton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="screen_capture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="xml_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="manager.cpp">

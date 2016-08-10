@@ -19,10 +19,10 @@ void ResSingleton::DestroyInstance()
 	}
 }
 
-XmlManager* ResSingleton::GetXmlManager()
-{
-	return &xml_manager_;
-}
+//XmlManager* ResSingleton::GetXmlManager()
+//{
+//	return &xml_manager_;
+//}
 
 //IpManager* ResSingleton::GetIpManager()
 //{
