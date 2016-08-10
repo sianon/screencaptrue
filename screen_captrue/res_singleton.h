@@ -1,7 +1,7 @@
 #ifndef __RES_SINGLETON_H__
 #define __RES_SINGLETON_H__
 
-#include "xml_manager.h"
+//#include "xml_manager.h"
 
 class IpManager;
 
@@ -14,12 +14,12 @@ public:
 	static ResSingleton* GetInstance();
 	static void DestroyInstance();
 
-	XmlManager* GetXmlManager();
+	//XmlManager* GetXmlManager();
 	IpManager* GetIpManager() { return ip_manager_; }
 
 private:
 	static ResSingleton* instance_;
-	XmlManager xml_manager_;
+	//XmlManager xml_manager_;
 	IpManager* ip_manager_;
 };
 

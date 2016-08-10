@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "screen_captrue.h"
-#include "ip_manager.h"
 #include "manager.h"
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
