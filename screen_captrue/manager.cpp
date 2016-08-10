@@ -1,7 +1,10 @@
 #include "manager.h"
+#include <map>
 #include <WinSock2.h>
+#include <IPHlpApi.h>
+#include <sstream>
 
-#pragma comment(lib,"ws2_32.lib")
+#pragma comment(lib,"Iphlpapi.lib")
 
 Manager::Manager()
 	: is_start_serve_(true)
@@ -33,6 +36,8 @@ LRESULT Manager::OnInit()
 		elemen->SetText(iter.c_str());
 		live_addr_combo->Add(elemen);
 	}
+
+	audio_panel_.CreateWithDefaultStyle(m_hWnd);
 	
 	return 0;
 }
@@ -46,6 +51,7 @@ LRESULT Manager::OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled
 		case WM_RBUTTONUP: {
 			LPPOINT lpoint = new tagPOINT;
 			::GetCursorPos(lpoint);
+			audio_panel_.PopupWindow(lpoint);
 		}
 		break;
 		case WM_LBUTTONDBLCLK:
@@ -54,6 +60,14 @@ LRESULT Manager::OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled
 		}
 		break;
 	}
+	return LRESULT();
+}
+
+LRESULT Manager::OnPopMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled)
+{
+	if (uMsg == kAM_ExitForPop)
+		Close();
+
 	return LRESULT();
 }
 
@@ -81,7 +95,8 @@ void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 	if (!screen_quality->GetText())
 		return;
 	screen_quality_old_ = screen_quality_;
-	screen_quality_ = screen_quality->GetText();
+	CDuiString temp = screen_quality->GetText();
+	screen_quality_ = _T("0.7");
 
 	if (is_start_serve_) {
 		ScreenServe();
@@ -93,6 +108,8 @@ void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 
 void Manager::OnClickEndBtn(TNotifyUI & msg, bool & handled)
 {
+	//std::vector<std::wstring> ip_addr;
+	//GetLocalIPAddr(ip_addr);
 }
 
 void Manager::OnSelectChanged(TNotifyUI & msg, bool & handled)
@@ -196,7 +213,7 @@ void Manager::ToTray()
 	wnd_to_tray.hWnd = this->m_hWnd;
 	wnd_to_tray.uID = IDR_MAINFRAME;
 	wnd_to_tray.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
-	wnd_to_tray.uCallbackMessage = WM_SHOWTASK_1;
+	wnd_to_tray.uCallbackMessage = kAM_ShowTaskMsg;
 	wnd_to_tray.hIcon = (HICON)LoadImage(NULL, L"screen_captrue.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
 
 	wcscpy_s(wnd_to_tray.szTip, L"成都天狐威视IVGA");
@@ -225,19 +242,29 @@ void Manager::SetAutoRun(bool bautorun)
 
 void Manager::GetLocalIPAddr(vector<wstring> & ip_addr)
 {
-	//char host_name[128];
-	//if (gethostname(host_name, 128) != 0)
-	//	return;
-
-	//struct hostent * pHost = NULL;
-	//pHost = gethostbyname(host_name);
-	//if (pHost == NULL)
-	//	return;
-
-	//for (int i = 0; pHost != NULL && pHost->h_addr_list[i] != NULL; ++i) {
-	//	string temp_s(inet_ntoa(*(struct in_addr*)(pHost->h_addr_list[i])));
-	//	wstring temp_ws = L"";
-	//	copy(temp_s.begin(), temp_s.end(), temp_ws);
-	//	ip_addr.push_back(temp_ws);
-	//}
+	PIP_ADAPTER_INFO pIpAdapterInfo = new IP_ADAPTER_INFO();
+	unsigned long stSize = sizeof(IP_ADAPTER_INFO);
+	int nRel = GetAdaptersInfo(pIpAdapterInfo, &stSize);	// 这里，stSize 既是输入量也是输出量；
+	if (ERROR_BUFFER_OVERFLOW == nRel) {	
+		// ERROR_BUFFER_OVERFLOW 表示 传递给 GetAdaptersInfo 的内存空间不够，同时传出的 stSize 表示所需的空间大小
+		delete pIpAdapterInfo;	// 释放掉，重新分配！
+		pIpAdapterInfo = (PIP_ADAPTER_INFO) new BYTE[stSize];
+		nRel = GetAdaptersInfo(pIpAdapterInfo, &stSize);	// 利用传出的新空间大小值，重新填充 pIpAdapterInfo
+	}
+	std::wostringstream oss;
+	if (ERROR_SUCCESS == nRel) {
+		while (pIpAdapterInfo)
+		{
+			auto iter = &pIpAdapterInfo->IpAddressList;
+			while (iter)
+			{
+				oss.str(L"");
+				oss << iter->IpAddress.String;
+				if (_tccmp(L"0.0.0.0", oss.str().c_str()) != 0)
+					ip_addr.push_back(oss.str());
+				iter = iter->Next;
+			}
+			pIpAdapterInfo = pIpAdapterInfo->Next;
+		}
+	}
 }

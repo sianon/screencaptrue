@@ -24,6 +24,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	delete screen_capture_wnd;
 	//Initialize global strings
 	*/
+
+	
 	CPaintManagerUI::SetInstance(hInstance);
 	CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath() + _T("skin_1"));	
 
@@ -31,6 +33,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	manager.Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
 	manager.CenterWindow();
 	manager.ShowModal();
+	/**/
 
 	return 0;
 }

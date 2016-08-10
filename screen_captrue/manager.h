@@ -3,10 +3,10 @@
 #include "Resource.h"
 #include "base_window.h"
 #include "vlc/vlc.h"
+#include "audio_adjust_panel.h"
+#include "msg_head.h"
 #include <atlbase.h>
 #include <vector>
-
-#define WM_SHOWTASK_1 (WM_USER + 10)
 
 class Manager : public BaseWindow
 {
@@ -15,7 +15,8 @@ public:
 	~Manager();
 
 	BEGIN_DUIMSG_MAP(Manager)
-		DUIMSG_HANDLER(WM_SHOWTASK_1, OnTray)
+		DUIMSG_HANDLER(kAM_ShowTaskMsg, OnTray)
+		DUIMSG_HANDLER(kAM_ExitForPop, OnPopMsg)
 	END_DUIMSG_MAP()
 
 	BEGIN_DUINOTIFY_MAP(Manager)
@@ -34,6 +35,7 @@ public:
 
 private:
 	LRESULT OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
+	LRESULT OnPopMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
 
 private:
 	void OnClickSysBtn(TNotifyUI &msg, bool &handled);
@@ -62,4 +64,5 @@ private:
 	const char* media_name_;
 	CDuiString dir_name_;
 	CDuiString port_;
+	AudioAdjustPanel audio_panel_;
 };
