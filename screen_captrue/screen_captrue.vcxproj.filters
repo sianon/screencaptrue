@@ -62,6 +62,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="hook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="syscfg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
