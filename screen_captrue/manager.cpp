@@ -1,4 +1,5 @@
 #include "manager.h"
+#include "res_singleton.h"
 #include <map>
 #include <WinSock2.h>
 #include <IPHlpApi.h>
@@ -66,7 +67,7 @@ LRESULT Manager::OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled
 LRESULT Manager::OnPopMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled)
 {
 	if (uMsg == kAM_ExitForPop)
-		Close();
+		PostMessage(WM_SYSCOMMAND, SC_CLOSE, 0);
 
 	return LRESULT();
 }
@@ -108,8 +109,7 @@ void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 
 void Manager::OnClickEndBtn(TNotifyUI & msg, bool & handled)
 {
-	//std::vector<std::wstring> ip_addr;
-	//GetLocalIPAddr(ip_addr);
+	ResSingleton::GetInstance()->GetSyscfg()->SetTestNode(L"123456");
 }
 
 void Manager::OnSelectChanged(TNotifyUI & msg, bool & handled)
