@@ -4,6 +4,7 @@ ResSingleton* ResSingleton::instance_ = nullptr;
 
 ResSingleton::ResSingleton()
 {
+	syscfg_.LoadFile();
 }
 
 ResSingleton* ResSingleton::GetInstance()
@@ -18,13 +19,3 @@ void ResSingleton::DestroyInstance()
 		instance_ = nullptr;
 	}
 }
-
-//XmlManager* ResSingleton::GetXmlManager()
-//{
-//	return &xml_manager_;
-//}
-
-//IpManager* ResSingleton::GetIpManager()
-//{
-//	return &ip_manager_;
-//}
