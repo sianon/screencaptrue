@@ -61,6 +61,9 @@
     <ClInclude Include="msg_head.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="hook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base_window.cpp">
