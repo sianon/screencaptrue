@@ -26,6 +26,8 @@ public:
     DUINOTIFY_TYPE_HANDLER(DUINOTIFY_SELECTCHANGED, OnSelectChanged)
   END_DUINOTIFY_MAP()
 
+public:
+  void PopupWindow(PPOINT point, bool left_bottom = false);
   LRESULT OnShowWindow(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
   void OnValueChanged(TNotifyUI &msg, bool& handled);

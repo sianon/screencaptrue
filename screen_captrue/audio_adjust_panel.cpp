@@ -11,6 +11,22 @@ LRESULT AudioAdjustPanel::OnInit()
   return 0;
 }
 
+void AudioAdjustPanel::PopupWindow(PPOINT point, bool left_bottom /*= false*/)
+{
+	int srceen_width = ::GetSystemMetrics(SM_CXSCREEN);
+	int srceen_height = ::GetSystemMetrics(SM_CYSCREEN);
+	int x = point->x;
+	int y = point->y;
+
+	if (x + 70 > srceen_width)
+		x -= 70;
+	if (y + 124 > srceen_height)
+		y -= 124;
+	
+	::SetWindowPos(m_hWnd, 0, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+	ShowWindow();
+}
+
 LRESULT AudioAdjustPanel::OnShowWindow(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
   return 0;
