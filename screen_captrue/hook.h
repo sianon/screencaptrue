@@ -48,6 +48,13 @@ public:
 
 		if (!wcscmp(L"EditWnd", class_name_buf) || !wcscmp(L"Edit", class_name_buf))
 			return TRUE;
+
+		if (keyboard_msg == WM_KEYUP){
+			if (0 == HIBYTE(GetKeyState(VK_LSHIFT)) >> 7 && 0 == HIBYTE(GetKeyState(VK_LCONTROL)) >> 7
+				&& (keyboard_info->vkCode >= 0x32 && keyboard_info->vkCode <= 0x38)
+				|| (keyboard_info->vkCode >= VK_F1 && keyboard_info->vkCode <= VK_F8))
+				;
+		}
 	}
 	~IVGAHook();
 

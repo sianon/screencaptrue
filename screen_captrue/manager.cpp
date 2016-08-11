@@ -97,7 +97,6 @@ void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 		return;
 	screen_quality_old_ = screen_quality_;
 	CDuiString temp = screen_quality->GetText();
-	screen_quality_ = _T("0.7");
 
 	if (is_start_serve_) {
 		ScreenServe();
@@ -195,10 +194,12 @@ void Manager::Play()
 	const char* url = "Screen://";
 	wstring first_part = L"#transcode{vcodec=mp4v,acodec=none,vb=16,threads=2,scale=";
 	wstring scale = screen_quality_.GetData();
-	wstring third_part = L"}:duplicate{dst=rtp{sdp=rtsp://:";
+	wstring third_part = L"}:duplicate{dst=rtp{sdp=rtsp://";
+	wstring ip_server = ip_server_.GetData();
+	wstring double_dot = L":";
 	wstring port = port_.GetData();
 	wstring last_part = dir_name_.GetData();
-	wstring sout = first_part + scale + third_part + port + L"/" + last_part + L"}}";
+	wstring sout = first_part + scale + third_part + ip_server + port + L"/" + last_part + L"}}";
 
 	vlc_ = libvlc_new(sizeof(argv) / sizeof(argv[0]), argv);
 	libvlc_vlm_add_broadcast(vlc_, media_name_, url, CW2A(sout.c_str()), 0, NULL, true, false);

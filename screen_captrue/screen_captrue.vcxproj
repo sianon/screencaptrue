@@ -103,6 +103,7 @@
     <ClInclude Include="auto_hide_wnd.h" />
     <ClInclude Include="base_window.h" />
     <ClInclude Include="hook.h" />
+    <ClInclude Include="ivga_engine.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="msg_head.h" />
     <ClInclude Include="native_control_ui.h" />
@@ -116,6 +117,7 @@
     <ClCompile Include="audio_adjust_panel.cpp" />
     <ClCompile Include="base_window.cpp" />
     <ClCompile Include="ivga.cpp" />
+    <ClCompile Include="ivga_engine.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="native_control_ui.cpp" />
     <ClCompile Include="res_singleton.cpp" />

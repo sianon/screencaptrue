@@ -57,6 +57,7 @@ private:
 	bool is_start_client_;
 	INT screen_fps_;
 	INT screen_fps_old_;
+	CDuiString ip_server_;
 	CDuiString ip_push_;
 	CDuiString screen_quality_;
 	CDuiString screen_quality_old_;
