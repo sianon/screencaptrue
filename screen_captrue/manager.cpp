@@ -8,19 +8,19 @@
 #pragma comment(lib,"Iphlpapi.lib")
 
 Manager::Manager()
-	: is_start_serve_(true)
-	, is_start_client_(false)
-	, screen_fps_(15)
-	, screen_fps_old_(0)
-	, screen_quality_(L"0.8")
-	, screen_quality_old_(L"")
-	, vlc_(nullptr)
-	, media_name_("screen")
-	, dir_name_(L"default")
-	, port_(L"554")
-	, ip_server_(L"")
-	, ip_push_(L"")
+	: vlc_(nullptr) 
 {
+	stream_data_info_.is_start_serve = true;
+	stream_data_info_.is_start_client = false;
+	stream_data_info_.screen_fps = 25;
+	stream_data_info_.screen_fps_old = 0;
+	stream_data_info_.screen_quality = _T("0.8");
+	stream_data_info_.screen_quality_old = _T("0");
+	stream_data_info_.media_name = "screen";
+	stream_data_info_.dir_name = _T("live123");
+	stream_data_info_.port = _T("554");
+	stream_data_info_.ip_server = _T("");
+	stream_data_info_.ip_push = _T("10.18.3.61");
 }
 
 Manager::~Manager()
@@ -28,6 +28,21 @@ Manager::~Manager()
 }
 
 LRESULT Manager::OnInit()
+{
+	OptTabInit();
+	ServeTabInit();
+	AVSTabInit();
+
+	audio_panel_.CreateWithDefaultStyle(m_hWnd);
+	
+	return 0;
+}
+
+void Manager::OptTabInit()
+{
+}
+
+void Manager::ServeTabInit()
 {
 	vector<wstring> ip_addrs;
 	GetLocalIPAddr(ip_addrs);
@@ -39,9 +54,30 @@ LRESULT Manager::OnInit()
 		live_addr_combo->Add(elemen);
 	}
 
-	audio_panel_.CreateWithDefaultStyle(m_hWnd);
-	
-	return 0;
+	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("serve_radio")))->Selected(stream_data_info_.is_start_serve);
+	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("push_radio")))->Selected(stream_data_info_.is_start_client);
+	m_PaintManager.FindControl(_T("live_address"))->SetEnabled(stream_data_info_.is_start_serve);
+
+	m_PaintManager.FindControl(_T("live_port_edit"))->SetEnabled(stream_data_info_.is_start_serve);
+	m_PaintManager.FindControl(_T("live_port_edit"))->SetText(stream_data_info_.port);
+
+	m_PaintManager.FindControl(_T("live_dir_edit"))->SetEnabled(stream_data_info_.is_start_serve);
+	m_PaintManager.FindControl(_T("live_dir_edit"))->SetText(stream_data_info_.dir_name);
+
+	m_PaintManager.FindControl(_T("push_address"))->SetEnabled(stream_data_info_.is_start_client);
+	m_PaintManager.FindControl(_T("push_address"))->SetText(stream_data_info_.ip_push);
+
+	m_PaintManager.FindControl(_T("push_port_edit"))->SetEnabled(stream_data_info_.is_start_client);
+	m_PaintManager.FindControl(_T("push_port_edit"))->SetText(stream_data_info_.port);
+
+	m_PaintManager.FindControl(_T("push_dir_edit"))->SetEnabled(stream_data_info_.is_start_client);
+	m_PaintManager.FindControl(_T("push_dir_edit"))->SetText(stream_data_info_.dir_name);
+}
+
+void Manager::AVSTabInit()
+{
+	static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("frame_rate")))->SelectItem(stream_data_info_.screen_fps / 5 - 1);
+	static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("quality")))->SelectItem(7);
 }
 
 LRESULT Manager::OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled)
@@ -85,7 +121,7 @@ void Manager::OnClickSysBtn(TNotifyUI & msg, bool & handled)
 
 void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 {
-	if (is_start_serve_) {
+	if (stream_data_info_.is_start_serve) {
 		ScreenServe();
 	} else {
 		ScreenPush();
@@ -121,8 +157,8 @@ void Manager::OnTabServeChanged(TNotifyUI & msg, bool & handled)
 {
 	CDuiString name = msg.pSender->GetName();
 	if (name == _T("serve_radio")) {
-		is_start_serve_ = true;
-		is_start_client_ = false;
+		stream_data_info_.is_start_serve = true;
+		stream_data_info_.is_start_client = false;
 		m_PaintManager.FindControl(_T("live_address"))->SetEnabled(true);
 		m_PaintManager.FindControl(_T("live_port_edit"))->SetEnabled(true);
 		m_PaintManager.FindControl(_T("live_dir_edit"))->SetEnabled(true);
@@ -130,8 +166,8 @@ void Manager::OnTabServeChanged(TNotifyUI & msg, bool & handled)
 		m_PaintManager.FindControl(_T("push_port_edit"))->SetEnabled(false);
 		m_PaintManager.FindControl(_T("push_dir_edit"))->SetEnabled(false);
 	} else if (name == _T("push_radio")) {
-		is_start_serve_ = false;
-		is_start_client_ = true;
+		stream_data_info_.is_start_serve = false;
+		stream_data_info_.is_start_client = true;
 		m_PaintManager.FindControl(_T("live_address"))->SetEnabled(false);
 		m_PaintManager.FindControl(_T("live_port_edit"))->SetEnabled(false);
 		m_PaintManager.FindControl(_T("live_dir_edit"))->SetEnabled(false);
@@ -139,17 +175,17 @@ void Manager::OnTabServeChanged(TNotifyUI & msg, bool & handled)
 		m_PaintManager.FindControl(_T("push_port_edit"))->SetEnabled(true);
 		m_PaintManager.FindControl(_T("push_dir_edit"))->SetEnabled(true);
 	} else if (name == _T("live_address")) {
-		ip_server_ = msg.pSender->GetText();
+		stream_data_info_.ip_server = msg.pSender->GetText();
 	} else if (name == _T("live_port_edit")) {
-		port_ = msg.pSender->GetText();
+		stream_data_info_.port = msg.pSender->GetText();
 	} else if (name == _T("live_dir_edit")) {
-		dir_name_ = msg.pSender->GetText();
+		stream_data_info_.dir_name = msg.pSender->GetText();
 	} else if (name == _T("push_address")) {
-		ip_push_ = msg.pSender->GetText();
+		stream_data_info_.ip_push = msg.pSender->GetText();
 	} else if (name == _T("push_port_edit")) {
-		port_ = msg.pSender->GetText();
+		stream_data_info_.port = msg.pSender->GetText();
 	} else if (name == _T("push_dir_edit")) {
-		dir_name_ = msg.pSender->GetText();
+		stream_data_info_.dir_name = msg.pSender->GetText();
 	}
 }
 
@@ -157,44 +193,47 @@ void Manager::OnTabAVSChanged(TNotifyUI & msg, bool & handled)
 {
 	CDuiString name = msg.pSender->GetName();
 	if (name == _T("frame_rate")) {
-		screen_fps_old_ = screen_fps_;
-		screen_fps_ = _ttoi(msg.pSender->GetText());
+		stream_data_info_.screen_fps_old = stream_data_info_.screen_fps;
+		stream_data_info_.screen_fps = _ttoi(msg.pSender->GetText());
 	} else if (name == _T("quality")) {
-		screen_quality_old_ = screen_quality_;
+		stream_data_info_.screen_quality_old = stream_data_info_.screen_quality;
 		char temp[20];
 		double qua = _ttoi(msg.pSender->GetText()) / 10.0;
 		sprintf_s(temp, "%.2lf", qua);
-		screen_quality_ = temp;
+		CDuiString cds_temp;
+		cds_temp = temp;
+		stream_data_info_.screen_quality = cds_temp.GetData();
 	}
 }
 
 void Manager::ScreenServe()
 {
-	if (is_start_serve_) {
+	if (stream_data_info_.is_start_serve) {
 		if (!vlc_) {
 			Play();
 		} else {
-			if (!(screen_fps_old_ == screen_fps_) || !(_tcscmp(screen_quality_, screen_quality_old_) == 0)) {
+			if (!(stream_data_info_.screen_fps_old == stream_data_info_.screen_fps) 
+				|| !(_tcscmp(stream_data_info_.screen_quality, stream_data_info_.screen_quality_old) == 0)) {
 				OnExit();
 				Play();
 			}
 		}
 	}
 
-	is_start_serve_ = true;
+	stream_data_info_.is_start_serve = true;
 }
 
 void Manager::ScreenPush()
 {	
-	if (is_start_serve_) {
+	if (stream_data_info_.is_start_serve) {
 		OnExit();
 	}
 
-	is_start_serve_ = false;
+	stream_data_info_.is_start_serve = false;
 
 	string screen_fps("--screen-fps=");
 	char fps[3];
-	_itoa_s(screen_fps_, fps, 3, 10);
+	_itoa_s(stream_data_info_.screen_fps, fps, 3, 10);
 	screen_fps.append(fps);
 
 	const char * const argv[] = {
@@ -203,22 +242,22 @@ void Manager::ScreenPush()
 
 	const char* url = "Screen://";
 	wstring first_part = L"#transcode{vcodec=mp4v,acodec=none,vb=16,threads=2,scale=";
-	wstring scale = screen_quality_.GetData();
-	wstring third_part = L"}:duplicate{dst=rtp{sdp=rtsp://";
-	wstring ip_push = ip_push_.GetData();
+	wstring scale = stream_data_info_.screen_quality;
+	wstring third_part = L"}:standard{access=udp, mux=ts, dst=";
+	wstring ip_push = stream_data_info_.ip_push;
 	wstring double_dot = L":";
-	wstring port = port_.GetData();
-	wstring last_part = dir_name_.GetData();
-	wstring sout = first_part + scale + third_part + ip_push + double_dot + port + L"/" + last_part + L"}}";
+	wstring port = stream_data_info_.port;
+	wstring last_part = stream_data_info_.dir_name;
+	wstring sout = first_part + scale + third_part + ip_push + double_dot + port + L"/" + last_part + L"}";
 
 	vlc_ = libvlc_new(sizeof(argv) / sizeof(argv[0]), argv);
-	libvlc_vlm_add_broadcast(vlc_, media_name_, url, CW2A(sout.c_str()), 0, NULL, true, false);
-	libvlc_vlm_play_media(vlc_, media_name_);
+	libvlc_vlm_add_broadcast(vlc_, stream_data_info_.media_name, url, CW2A(sout.c_str()), 0, NULL, true, false);
+	libvlc_vlm_play_media(vlc_, stream_data_info_.media_name);
 }
 
 void Manager::OnExit()
 {
-	libvlc_vlm_stop_media(vlc_, media_name_);
+	libvlc_vlm_stop_media(vlc_, stream_data_info_.media_name);
 	libvlc_vlm_release(vlc_);
 }
 
@@ -226,7 +265,7 @@ void Manager::Play()
 {
 	string screen_fps("--screen-fps=");
 	char fps[3];
-	_itoa_s(screen_fps_, fps, 3, 10);
+	_itoa_s(stream_data_info_.screen_fps, fps, 3, 10);
 	screen_fps.append(fps);
 
 	const char * const argv[] = {
@@ -236,17 +275,17 @@ void Manager::Play()
 
 	const char* url = "Screen://";
 	wstring first_part = L"#transcode{vcodec=mp4v,acodec=none,vb=16,threads=2,scale=";
-	wstring scale = screen_quality_.GetData();
+	wstring scale = stream_data_info_.screen_quality;
 	wstring third_part = L"}:duplicate{dst=rtp{sdp=rtsp://";
-	wstring ip_server = ip_server_.GetData();
+	wstring ip_server = stream_data_info_.ip_server;
 	wstring double_dot = L":";
-	wstring port = port_.GetData();
-	wstring last_part = dir_name_.GetData();
+	wstring port = stream_data_info_.port;
+	wstring last_part = stream_data_info_.dir_name;
 	wstring sout = first_part + scale + third_part + ip_server + double_dot + port + L"/" + last_part + L"}}";
 
 	vlc_ = libvlc_new(sizeof(argv) / sizeof(argv[0]), argv);
-	libvlc_vlm_add_broadcast(vlc_, media_name_, url, CW2A(sout.c_str()), 0, NULL, true, false);
-	libvlc_vlm_play_media(vlc_, media_name_);
+	libvlc_vlm_add_broadcast(vlc_, stream_data_info_.media_name, url, CW2A(sout.c_str()), 0, NULL, true, false);
+	libvlc_vlm_play_media(vlc_, stream_data_info_.media_name);
 }
 
 void Manager::ToTray()

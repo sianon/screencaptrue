@@ -8,6 +8,21 @@
 #include <atlbase.h>
 #include <vector>
 
+typedef struct _StreamDataInfo 
+{
+	bool is_start_serve;
+	bool is_start_client;
+	INT screen_fps;
+	INT screen_fps_old;
+	LPCTSTR ip_server;
+	LPCTSTR ip_push;
+	LPCTSTR screen_quality;
+	LPCTSTR screen_quality_old;
+	const char* media_name;
+	LPCTSTR dir_name;
+	LPCTSTR port;
+}StreamDataInfo;
+
 class Manager : public BaseWindow
 {
 public:
@@ -57,6 +72,11 @@ public:
 	virtual LRESULT OnInit() override;
 
 private:
+	void OptTabInit();
+	void ServeTabInit();
+	void AVSTabInit();
+
+private:
 	LRESULT OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
 	LRESULT OnPopMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
 
@@ -79,17 +99,7 @@ private:
 	void GetLocalIPAddr(vector<wstring> & id_addr);
 
 private:
-	bool is_start_serve_;
-	bool is_start_client_;
-	INT screen_fps_;
-	INT screen_fps_old_;
-	CDuiString ip_server_;
-	CDuiString ip_push_;
-	CDuiString screen_quality_;
-	CDuiString screen_quality_old_;
+	StreamDataInfo stream_data_info_;
 	libvlc_instance_t* vlc_;
-	const char* media_name_;
-	CDuiString dir_name_;
-	CDuiString port_;
 	AudioAdjustPanel audio_panel_;
 };

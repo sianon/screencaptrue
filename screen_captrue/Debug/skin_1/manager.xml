@@ -32,7 +32,7 @@
         <Option name="aboutme_opt" text="#aboutme" font="1" selectedtextcolor="#ffffffff" textcolor="#ffaaaaaa" group="opt_tab_group" normalimage="file='res\tab.png' source='0,0,10,28'" selectedimage="file='res\tab.png' source='0,28,10,56'" />
       </HorizontalLayout>
       <Control height="1" />
-      <TabLayout name="main_opt_tab" bkcolor="#ff35383f" selectedid="1">
+      <TabLayout name="main_opt_tab" bkcolor="#ff35383f" selectedid="0">
         <!-- 选项页面 Begin -->
         <VerticalLayout comment="options_opt_body" inset="20,10,20,10">
           <Control />
@@ -76,9 +76,9 @@
                   <Control mouse="false" float="true" pos="-26,8,-15,19" bkimage="file='res\triangle.png'" />
                 </Container>
                 <Control width="5" />
-                <Edit name="live_port_edit" width="50" text="554" />
+                <Edit name="live_port_edit" width="50" text="" />
                 <Control width="5" />
-                <Edit name="live_dir_edit" width="80" text="/live123" />
+                <Edit name="live_dir_edit" width="80" text="" />
               </HorizontalLayout>
               <Control />
               <Label name="live_addr_show" height="15" text="访问地址：rtsp://10.18.3.10:55/live123" align="vcenter" />
@@ -97,11 +97,11 @@
               <Control />
               <HorizontalLayout height="25">
                 <Label text="#address" width="35" />
-                <Edit name="push_address" enabled="false" />
+                <Edit name="push_address" />
                 <Control width="5" />
-                <Edit name="push_port_edit" width="50" text="554" enabled="false" />
+                <Edit name="push_port_edit" width="50" text="" />
                 <Control width="5" />
-                <Edit name="push_dir_edit" width="80" text="/live123" enabled="false" />
+                <Edit name="push_dir_edit" width="80" text="" />
               </HorizontalLayout>
               <Control />
               <Label name="push_addr_show" height="15" text="推送到18.18.8.11   访问地址：rtsp://18.18.8.11:554/live123" align="vcenter" />
@@ -144,7 +144,7 @@
                     <ListLabelElement text="10" />
                     <ListLabelElement text="15" />
                     <ListLabelElement text="20" />
-                    <ListLabelElement text="25" selected="true" />
+                    <ListLabelElement text="25" />
                     <ListLabelElement text="30" />
                   </ComboBox>
                   <Control mouse="false" float="true" pos="-26,8,-15,19" bkimage="file='res\triangle.png'" />
@@ -162,7 +162,7 @@
                     <ListLabelElement text="4" />
                     <ListLabelElement text="5" />
                     <ListLabelElement text="6" />
-                    <ListLabelElement text="7" selected="true" />
+                    <ListLabelElement text="7" />
                     <ListLabelElement text="8" />
                     <ListLabelElement text="9" />
                     <ListLabelElement text="10" />
