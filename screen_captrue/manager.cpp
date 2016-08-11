@@ -121,25 +121,8 @@ void Manager::OnClickSysBtn(TNotifyUI & msg, bool & handled)
 
 void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 {
-<<<<<<< HEAD
-	PDUI_COMBO frame_rate = static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("frame_rate")));
 
-	if (!frame_rate)
-		return;
-	screen_fps_old_ = screen_fps_;
-	screen_fps_ = _ttoi(frame_rate->GetText());
-
-	PDUI_COMBO screen_quality = static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("quality")));
-
-	if (!screen_quality->GetText())
-		return;
-	screen_quality_old_ = screen_quality_;
-	CDuiString temp = screen_quality->GetText();
-
-	if (is_start_serve_) {
-=======
 	if (stream_data_info_.is_start_serve) {
->>>>>>> c9bb62e825e1c8e1e6f4e2492f36aa9108aef8cd
 		ScreenServe();
 	} else {
 		ScreenPush();
@@ -293,15 +276,6 @@ void Manager::Play()
 
 	const char* url = "Screen://";
 	wstring first_part = L"#transcode{vcodec=mp4v,acodec=none,vb=16,threads=2,scale=";
-<<<<<<< HEAD
-	wstring scale = screen_quality_.GetData();
-	wstring third_part = L"}:duplicate{dst=rtp{sdp=rtsp://";
-	wstring ip_server = ip_server_.GetData();
-	wstring double_dot = L":";
-	wstring port = port_.GetData();
-	wstring last_part = dir_name_.GetData();
-	wstring sout = first_part + scale + third_part + ip_server + port + L"/" + last_part + L"}}";
-=======
 	wstring scale = stream_data_info_.screen_quality;
 	wstring third_part = L"}:duplicate{dst=rtp{sdp=rtsp://";
 	wstring ip_server = stream_data_info_.ip_server;
@@ -309,7 +283,6 @@ void Manager::Play()
 	wstring port = stream_data_info_.port;
 	wstring last_part = stream_data_info_.dir_name;
 	wstring sout = first_part + scale + third_part + ip_server + double_dot + port + L"/" + last_part + L"}}";
->>>>>>> c9bb62e825e1c8e1e6f4e2492f36aa9108aef8cd
 
 	vlc_ = libvlc_new(sizeof(argv) / sizeof(argv[0]), argv);
 	libvlc_vlm_add_broadcast(vlc_, stream_data_info_.media_name, url, CW2A(sout.c_str()), 0, NULL, true, false);
