@@ -8,6 +8,21 @@
 #include <atlbase.h>
 #include <vector>
 
+typedef struct _StreamDataInfo 
+{
+	bool is_start_serve;
+	bool is_start_client;
+	INT screen_fps;
+	INT screen_fps_old;
+	LPCTSTR ip_server;
+	LPCTSTR ip_push;
+	LPCTSTR screen_quality;
+	LPCTSTR screen_quality_old;
+	const char* media_name;
+	LPCTSTR dir_name;
+	LPCTSTR port;
+}StreamDataInfo;
+
 class Manager : public BaseWindow
 {
 public:
@@ -24,7 +39,30 @@ public:
 		DUINOTIFY_HANDLER(_T("closebtn"), DUINOTIFY_CLICK, OnClickSysBtn)
 		DUINOTIFY_HANDLER(_T("begin_btn"), DUINOTIFY_CLICK, OnClickBeginBtn)
 		DUINOTIFY_HANDLER(_T("end_btn"), DUINOTIFY_CLICK, OnClickEndBtn)
-		DUINOTIFY_TYPE_HANDLER(DUINOTIFY_SELECTCHANGED, OnSelectChanged)
+
+		/* TabLayout 的切换响应 */
+		DUINOTIFY_HANDLER(_T("options_opt"),DUINOTIFY_SELECTCHANGED, OnTabSelectChanged)
+		DUINOTIFY_HANDLER(_T("serve_opt"), DUINOTIFY_SELECTCHANGED, OnTabSelectChanged)
+		DUINOTIFY_HANDLER(_T("AVS_opt"), DUINOTIFY_SELECTCHANGED, OnTabSelectChanged)
+		DUINOTIFY_HANDLER(_T("aboutme_opt"), DUINOTIFY_SELECTCHANGED, OnTabSelectChanged)
+
+		/* options_opt_body 控件变化响应 */
+		
+
+		/* serve_opt_body 控件变化响应 */
+		DUINOTIFY_HANDLER(_T("serve_radio"), DUINOTIFY_SELECTCHANGED, OnTabServeChanged)
+		DUINOTIFY_HANDLER(_T("push_radio"), DUINOTIFY_SELECTCHANGED, OnTabServeChanged)
+		DUINOTIFY_HANDLER(_T("videos_check"), DUINOTIFY_SELECTCHANGED, OnTabServeChanged)
+		DUINOTIFY_HANDLER(_T("live_address"), DUINOTIFY_ITEMSELECT, OnTabServeChanged)
+		DUINOTIFY_HANDLER(_T("live_port_edit"), DUINOTIFY_TEXTCHANGED, OnTabServeChanged)
+		DUINOTIFY_HANDLER(_T("live_dir_edit"), DUINOTIFY_TEXTCHANGED, OnTabServeChanged)
+		DUINOTIFY_HANDLER(_T("push_address"), DUINOTIFY_TEXTCHANGED, OnTabServeChanged)
+		DUINOTIFY_HANDLER(_T("push_port_edit"), DUINOTIFY_TEXTCHANGED, OnTabServeChanged)
+		DUINOTIFY_HANDLER(_T("push_dir_edit"), DUINOTIFY_TEXTCHANGED, OnTabServeChanged)
+
+		/* AVS_opt_body 控件变化响应 */
+		DUINOTIFY_HANDLER(_T("frame_rate"), DUINOTIFY_ITEMSELECT, OnTabAVSChanged)
+		DUINOTIFY_HANDLER(_T("quality"), DUINOTIFY_ITEMSELECT, OnTabAVSChanged)
 	END_DUINOTIFY_MAP()
 
 	virtual CDuiString GetSkinFile() override { return _T("manager.xml"); }
@@ -34,6 +72,11 @@ public:
 	virtual LRESULT OnInit() override;
 
 private:
+	void OptTabInit();
+	void ServeTabInit();
+	void AVSTabInit();
+
+private:
 	LRESULT OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
 	LRESULT OnPopMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
 
@@ -41,7 +84,10 @@ private:
 	void OnClickSysBtn(TNotifyUI &msg, bool &handled);
 	void OnClickBeginBtn(TNotifyUI &msg, bool &handled);
 	void OnClickEndBtn(TNotifyUI &msg, bool &handled);
-	void OnSelectChanged(TNotifyUI &msg, bool &handled);
+	void OnTabSelectChanged(TNotifyUI &msg, bool &handled);
+	void OnTabOptionsChanged(TNotifyUI &msg, bool &handled);
+	void OnTabServeChanged(TNotifyUI &msg, bool &handled);
+	void OnTabAVSChanged(TNotifyUI &msg, bool &handled);
 
 private:
 	void ScreenServe();
@@ -53,17 +99,9 @@ private:
 	void GetLocalIPAddr(vector<wstring> & id_addr);
 
 private:
-	bool is_start_serve_;
-	bool is_start_client_;
-	INT screen_fps_;
-	INT screen_fps_old_;
-	CDuiString ip_server_;
-	CDuiString ip_push_;
-	CDuiString screen_quality_;
-	CDuiString screen_quality_old_;
+
+	StreamDataInfo stream_data_info_;
+
 	libvlc_instance_t* vlc_;
-	const char* media_name_;
-	CDuiString dir_name_;
-	CDuiString port_;
 	AudioAdjustPanel audio_panel_;
 };
