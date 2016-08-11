@@ -18,6 +18,7 @@ Manager::Manager()
 	, media_name_("screen")
 	, dir_name_(L"default")
 	, port_(L"554")
+	, ip_server_(L"")
 	, ip_push_(L"")
 {
 }
@@ -84,21 +85,6 @@ void Manager::OnClickSysBtn(TNotifyUI & msg, bool & handled)
 
 void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 {
-	PDUI_COMBO frame_rate = static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("frame_rate")));
-
-	if (!frame_rate)
-		return;
-	screen_fps_old_ = screen_fps_;
-	screen_fps_ = _ttoi(frame_rate->GetText());
-
-	PDUI_COMBO screen_quality = static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("quality")));
-
-	if (!screen_quality->GetText())
-		return;
-	screen_quality_old_ = screen_quality_;
-	CDuiString temp = screen_quality->GetText();
-	screen_quality_ = _T("0.7");
-
 	if (is_start_serve_) {
 		ScreenServe();
 	} else {
@@ -112,7 +98,7 @@ void Manager::OnClickEndBtn(TNotifyUI & msg, bool & handled)
 	ResSingleton::GetInstance()->GetSyscfg()->SetTestNode(L"123456");
 }
 
-void Manager::OnSelectChanged(TNotifyUI & msg, bool & handled)
+void Manager::OnTabSelectChanged(TNotifyUI & msg, bool & handled)
 {
 	PDUI_TABLAYOUT tlayout = static_cast<PDUI_TABLAYOUT>(m_PaintManager.FindControl(_T("main_opt_tab")));
 	if (msg.pSender->GetName() == _T("options_opt")) {
@@ -123,6 +109,62 @@ void Manager::OnSelectChanged(TNotifyUI & msg, bool & handled)
 		tlayout->SelectItem(2);
 	} else if (msg.pSender->GetName() == _T("aboutme_opt")) {
 		tlayout->SelectItem(3);
+	}
+}
+
+void Manager::OnTabOptionsChanged(TNotifyUI & msg, bool & handled)
+{
+
+}
+
+void Manager::OnTabServeChanged(TNotifyUI & msg, bool & handled)
+{
+	CDuiString name = msg.pSender->GetName();
+	if (name == _T("serve_radio")) {
+		is_start_serve_ = true;
+		is_start_client_ = false;
+		m_PaintManager.FindControl(_T("live_address"))->SetEnabled(true);
+		m_PaintManager.FindControl(_T("live_port_edit"))->SetEnabled(true);
+		m_PaintManager.FindControl(_T("live_dir_edit"))->SetEnabled(true);
+		m_PaintManager.FindControl(_T("push_address"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("push_port_edit"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("push_dir_edit"))->SetEnabled(false);
+	} else if (name == _T("push_radio")) {
+		is_start_serve_ = false;
+		is_start_client_ = true;
+		m_PaintManager.FindControl(_T("live_address"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("live_port_edit"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("live_dir_edit"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("push_address"))->SetEnabled(true);
+		m_PaintManager.FindControl(_T("push_port_edit"))->SetEnabled(true);
+		m_PaintManager.FindControl(_T("push_dir_edit"))->SetEnabled(true);
+	} else if (name == _T("live_address")) {
+		ip_server_ = msg.pSender->GetText();
+	} else if (name == _T("live_port_edit")) {
+		port_ = msg.pSender->GetText();
+	} else if (name == _T("live_dir_edit")) {
+		dir_name_ = msg.pSender->GetText();
+	} else if (name == _T("push_address")) {
+		ip_push_ = msg.pSender->GetText();
+	} else if (name == _T("push_port_edit")) {
+		port_ = msg.pSender->GetText();
+	} else if (name == _T("push_dir_edit")) {
+		dir_name_ = msg.pSender->GetText();
+	}
+}
+
+void Manager::OnTabAVSChanged(TNotifyUI & msg, bool & handled)
+{
+	CDuiString name = msg.pSender->GetName();
+	if (name == _T("frame_rate")) {
+		screen_fps_old_ = screen_fps_;
+		screen_fps_ = _ttoi(msg.pSender->GetText());
+	} else if (name == _T("quality")) {
+		screen_quality_old_ = screen_quality_;
+		char temp[20];
+		double qua = _ttoi(msg.pSender->GetText()) / 10.0;
+		sprintf_s(temp, "%.2lf", qua);
+		screen_quality_ = temp;
 	}
 }
 
@@ -195,10 +237,12 @@ void Manager::Play()
 	const char* url = "Screen://";
 	wstring first_part = L"#transcode{vcodec=mp4v,acodec=none,vb=16,threads=2,scale=";
 	wstring scale = screen_quality_.GetData();
-	wstring third_part = L"}:duplicate{dst=rtp{sdp=rtsp://:";
+	wstring third_part = L"}:duplicate{dst=rtp{sdp=rtsp://";
+	wstring ip_server = ip_server_.GetData();
+	wstring double_dot = L":";
 	wstring port = port_.GetData();
 	wstring last_part = dir_name_.GetData();
-	wstring sout = first_part + scale + third_part + port + L"/" + last_part + L"}}";
+	wstring sout = first_part + scale + third_part + ip_server + double_dot + port + L"/" + last_part + L"}}";
 
 	vlc_ = libvlc_new(sizeof(argv) / sizeof(argv[0]), argv);
 	libvlc_vlm_add_broadcast(vlc_, media_name_, url, CW2A(sout.c_str()), 0, NULL, true, false);

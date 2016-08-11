@@ -12,7 +12,7 @@
 	<String id="hotkey_explain" text="快捷键说明：Ctrl+Z 开始直播   Ctrl+X 停止" />
 	<String id="live_service" text="直播服务" />
 	<String id="address" text="地址" />
-	<String id="plug_flow" text="推流" />
+	<String id="push_flow" text="推流" />
 	<String id="videos" text="录像" />
 	<String id="browse" text="浏览" />
 	<String id="frame_rate" text="帧率" />
@@ -22,4 +22,8 @@
 	<String id="set_up" text="设置" />
 	<String id="sound_for_play_and_MIC" text="播放+麦声音" />
 	<String id="sound_for_MIC" text="麦声音" />
+	<String id="begin_btn" text="开始" />
+	<String id="end_btn" text="停止" />
+	<String id="device_list" text="设备列表" />
+	<String id="live_serve_addr" text="直播服务器地址" />
 </StringTable>

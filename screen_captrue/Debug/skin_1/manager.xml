@@ -32,7 +32,7 @@
         <Option name="aboutme_opt" text="#aboutme" font="1" selectedtextcolor="#ffffffff" textcolor="#ffaaaaaa" group="opt_tab_group" normalimage="file='res\tab.png' source='0,0,10,28'" selectedimage="file='res\tab.png' source='0,28,10,56'" />
       </HorizontalLayout>
       <Control height="1" />
-      <TabLayout name="main_opt_tab" bkcolor="#ff35383f" selectedid="0">
+      <TabLayout name="main_opt_tab" bkcolor="#ff35383f" selectedid="1">
         <!-- 选项页面 Begin -->
         <VerticalLayout comment="options_opt_body" inset="20,10,20,10">
           <Control />
@@ -48,9 +48,9 @@
           <Control />
           <HorizontalLayout height="30">
             <Control />
-            <Button name="begin_btn" width="70" text="#开始" tooltip="Ctrl+Z" hottextcolor="#ffff0000" normalimage="file='res\btn_bk.png'" bkcolor="#" hotbkcolor="#" />
+            <Button name="begin_btn" width="70" text="#begin_btn" tooltip="Ctrl+Z" hottextcolor="#ffff0000" normalimage="file='res\btn_bk.png'" bkcolor="#" hotbkcolor="#" />
             <Control />
-            <Button name="end_btn" width="70" text="#停止" tooltip="Ctrl+X" hottextcolor="#ffff0000" normalimage="file='res\btn_bk.png'" bkcolor="#" hotbkcolor="#" />
+            <Button name="end_btn" width="70" text="#end_btn" tooltip="Ctrl+X" hottextcolor="#ffff0000" normalimage="file='res\btn_bk.png'" bkcolor="#" hotbkcolor="#" />
             <Control />
           </HorizontalLayout>
           <Control />
@@ -64,7 +64,7 @@
           <HorizontalLayout>
             <VerticalLayout width="110" bkcolor="#ff222222" inset="5,0,5,0">
               <Control />
-              <RadioBox name="" height="30" text="#live_service" selected="true" group="serve_radiobox" />
+              <RadioBox name="serve_radio" height="30" text="#live_service" selected="true" group="serve_radiobox" />
               <Control />
             </VerticalLayout>
             <VerticalLayout bkcolor="#ff2a2a2a" inset="10,5,10,5">
@@ -72,16 +72,16 @@
               <HorizontalLayout height="25">
                 <Label text="#address" width="35" />
                 <Container height="25">
-                  <ComboBox name="live_address" tooltip="直播服务器地址" />
+                  <ComboBox name="live_address" tooltip="#live_serve_addr" />
                   <Control mouse="false" float="true" pos="-26,8,-15,19" bkimage="file='res\triangle.png'" />
                 </Container>
                 <Control width="5" />
-                <Edit name="" width="50" text="554" />
+                <Edit name="live_port_edit" width="50" text="554" />
                 <Control width="5" />
-                <Edit name="" width="80" text="/live123" />
+                <Edit name="live_dir_edit" width="80" text="/live123" />
               </HorizontalLayout>
               <Control />
-              <Label name="" height="15" text="访问地址：rtsp://10.18.3.10:55/live123" align="vcenter" />
+              <Label name="live_addr_show" height="15" text="访问地址：rtsp://10.18.3.10:55/live123" align="vcenter" />
             </VerticalLayout>
           </HorizontalLayout>
           <Control height="10" />
@@ -90,21 +90,21 @@
           <HorizontalLayout>
             <VerticalLayout width="110" bkcolor="#ff222222" inset="5,0,5,0">
               <Control />
-              <RadioBox name="" height="30" text="#plug_flow" group="serve_radiobox" />
+              <RadioBox name="push_radio" height="30" text="#push_flow" group="serve_radiobox" />
               <Control />
             </VerticalLayout>
             <VerticalLayout bkcolor="#ff2a2a2a" inset="10,5,10,5">
               <Control />
               <HorizontalLayout height="25">
                 <Label text="#address" width="35" />
-                <Edit name="" />
+                <Edit name="push_address" enabled="false" />
                 <Control width="5" />
-                <Edit name="" width="50" text="554" />
+                <Edit name="push_port_edit" width="50" text="554" enabled="false" />
                 <Control width="5" />
-                <Edit name="" width="80" text="/live123" />
+                <Edit name="push_dir_edit" width="80" text="/live123" enabled="false" />
               </HorizontalLayout>
               <Control />
-              <Label name="" height="15" text="推送到18.18.8.11   访问地址：rtsp://18.18.8.11:554/live123" align="vcenter" />
+              <Label name="push_addr_show" height="15" text="推送到18.18.8.11   访问地址：rtsp://18.18.8.11:554/live123" align="vcenter" />
             </VerticalLayout>
           </HorizontalLayout>
           <Control height="10" />
@@ -113,16 +113,16 @@
           <HorizontalLayout>
             <VerticalLayout width="110" bkcolor="#ff222222" inset="5,0,5,0">
               <Control />
-              <CheckBox name="" height="30" text="#videos" />
+              <CheckBox name="videos_check" height="30" text="#videos" />
               <Control />
             </VerticalLayout>
             <VerticalLayout bkcolor="#ff2a2a2a" inset="10,5,10,5">
               <Control />
               <HorizontalLayout height="25">
                 <Label text="#videos" width="35" />
-                <Edit name="" />
+                <Edit name="video_paht_edit" enabled="false" />
                 <Control width="5" />
-                <Button name="" width="50" text="#browse" hottextcolor="#ffff0000" normalimage="file='res\btn_bk.png'" bkcolor="#" hotbkcolor="#" />
+                <Button name="videos_browse_btn" width="50" text="#browse" hottextcolor="#ffff0000" normalimage="file='res\btn_bk.png'" bkcolor="#" hotbkcolor="#" />
               </HorizontalLayout>
               <Control />
             </VerticalLayout>
@@ -181,7 +181,7 @@
               <RadioBox name="" width="130" text="#screen" group="AVS_V_radiobox" selected="true" />
               <RadioBox name="" width="130" text="#video" group="AVS_V_radiobox" />
               <Container height="30" inset="0,3,0,2">
-                <ComboBox name="" tooltip="#设备列表" />
+                <ComboBox name="" tooltip="#device_list" />
                 <Control mouse="false" float="true" pos="-26,11,-15,22" bkimage="file='res\triangle.png'" />
               </Container>
               <Control width="10" />
@@ -196,7 +196,7 @@
               <RadioBox name="" width="130" text="#sound_for_play_and_MIC" group="AVS_A_radiobox" selected="true" />
               <RadioBox name="" width="130" text="#sound_for_MIC" group="AVS_A_radiobox" />
               <Container height="30" inset="0,3,0,2">
-                <ComboBox name="" tooltip="#设备列表" />
+                <ComboBox name="" tooltip="#device_list" />
                 <Control mouse="false" float="true" pos="-26,11,-15,22" bkimage="file='res\triangle.png'" />
               </Container>
               <Control width="10" />
