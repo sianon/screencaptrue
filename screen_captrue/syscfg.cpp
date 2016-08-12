@@ -8,7 +8,6 @@ Syscfg::Syscfg()
 
 Syscfg::~Syscfg()
 {
-	SaveFile();
 }
 
 bool Syscfg::LoadFile(const WCHAR * path /*= nullptr*/)
@@ -38,10 +37,10 @@ bool Syscfg::SetPaht(const WCHAR * path /*= nullptr*/)
 bool Syscfg::SaveFile(const WCHAR * path)
 {
 	if (path)
-		modified_ = !doc_.save_file(path, "  ", pugi::format_indent | pugi::format_write_bom, pugi::encoding_utf8);
+		return doc_.save_file(path, "  ", pugi::format_indent | pugi::format_write_bom, pugi::encoding_utf8);
 	else
-		modified_ = !doc_.save_file(path_.c_str(), "  ", pugi::format_indent | pugi::format_write_bom, pugi::encoding_utf8);
-	return !modified_;
+		return doc_.save_file(path_.c_str(), "  ", pugi::format_indent | pugi::format_write_bom, pugi::encoding_utf8);
+	return false;
 }
 
 pugi::xml_node Syscfg::GetRootNode()
@@ -66,21 +65,35 @@ pugi::xml_node Syscfg::GetNode(const char * name)
 	return node;
 }
 
-pugi::xml_node Syscfg::GetTestNode()
+pugi::xml_node Syscfg::GetRunState()
 {
-	return GetNode("test");
+	return GetNode("run_state");
 }
 
-bool Syscfg::SetTestNode(std::wstring attr)
+bool Syscfg::SetRunState(bool attr)
 {
-	pugi::xml_node node = GetTestNode();
-	pugi::xml_attribute node_attr = node.attribute("test_attr");
-	if (!node_attr) {
-		node_attr = node.append_attribute("test_attr");
-		node_attr = attr.c_str();
-	}
+	pugi::xml_node node = GetRunState();
+	pugi::xml_attribute node_attr = node.attribute("serve");
+	if (!node_attr)
+		node_attr = node.append_attribute("serve");
+	node_attr = attr;
 
-	SaveFile();
-	modified_ = true;
-	return true;
+	node_attr = node.attribute("client");
+	if (!node_attr)
+		node_attr = node.append_attribute("client");
+	node_attr = !attr;
+
+	return SaveFile();
 }
+
+bool Syscfg::SetNodeAttr(string node_n, string attr_n, string value)
+{
+	pugi::xml_node node = GetNode(node_n.c_str());
+	pugi::xml_attribute attr = node.attribute(attr_n.c_str());
+	if (!attr)
+		attr = node.append_attribute(attr_n.c_str());
+	attr = value.c_str();
+
+	return SaveFile();
+}
+

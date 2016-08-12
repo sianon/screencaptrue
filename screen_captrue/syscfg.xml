@@ -1,3 +1,4 @@
 ﻿<?xml version="1.0"?>
-<cfginfo>
+<cfginfo name="true" version="true">
+  <run_state serve="false" client="true" />
 </cfginfo>

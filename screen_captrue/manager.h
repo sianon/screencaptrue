@@ -5,23 +5,9 @@
 #include "vlc/vlc.h"
 #include "audio_adjust_panel.h"
 #include "msg_head.h"
+#include "syscfg.h"
 #include <atlbase.h>
 #include <vector>
-
-typedef struct _StreamDataInfo 
-{
-	bool is_start_serve;
-	bool is_start_client;
-	INT screen_fps;
-	INT screen_fps_old;
-	LPCTSTR ip_server;
-	LPCTSTR ip_push;
-	LPCTSTR screen_quality;
-	LPCTSTR screen_quality_old;
-	const char* media_name;
-	LPCTSTR dir_name;
-	LPCTSTR port;
-}StreamDataInfo;
 
 class Manager : public BaseWindow
 {
