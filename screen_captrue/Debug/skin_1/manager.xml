@@ -37,13 +37,13 @@
         <VerticalLayout comment="options_opt_body" inset="20,10,20,10">
           <Control />
           <HorizontalLayout height="30" inset="40,0,0,0">
-            <CheckBox name="" text="#auto_start" selected="true" />
-            <CheckBox name="" text="#min_start" selected="true" />
+            <CheckBox name="auto_start" text="#auto_start" selected="true" />
+            <CheckBox name="min_start" text="#min_start" selected="true" />
           </HorizontalLayout>
           <Control />
           <HorizontalLayout height="30" inset="40,0,0,0">
-            <RadioBox name="" text="#live" selected="true" group="optional_radiobox" />
-            <RadioBox name="" text="#live_and_videos" group="optional_radiobox" />
+            <RadioBox name="live" text="#live" selected="true" group="optional_radiobox" />
+            <RadioBox name="live_and_videos" text="#live_and_videos" group="optional_radiobox" />
           </HorizontalLayout>
           <Control />
           <HorizontalLayout height="30">

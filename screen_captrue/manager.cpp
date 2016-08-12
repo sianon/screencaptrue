@@ -132,7 +132,6 @@ void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 
 void Manager::OnClickEndBtn(TNotifyUI & msg, bool & handled)
 {
-	ResSingleton::GetInstance()->GetSyscfg()->SetTestNode(L"123456");
 }
 
 void Manager::OnTabSelectChanged(TNotifyUI & msg, bool & handled)
