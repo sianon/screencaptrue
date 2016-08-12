@@ -5,6 +5,11 @@
 
 #pragma comment(lib, "ivga_hook.lib")
 
+enum FastKey
+{
+	FastKey
+};
+
 class IVGAHook
 {
 public:
@@ -40,7 +45,7 @@ public:
 		GetWindowThreadProcessId(hwnd, &process_id);
 		if (process_id_ != process_id)
 			return TRUE;
-		if (!enable_shortcut_key_ && keyboard_info->vkCode != 0x23);
+		if (!enable_shortcut_key_ && keyboard_info->vkCode != 0x23)
 		return TRUE;
 		HWND focus_hwnd = GetFocus();
 		wchar_t class_name_buf[128];
@@ -50,14 +55,13 @@ public:
 			return TRUE;
 
 		if (keyboard_msg == WM_KEYUP){
-			if (0 == HIBYTE(GetKeyState(VK_LSHIFT)) >> 7 && 0 == HIBYTE(GetKeyState(VK_LCONTROL)) >> 7
-				&& (keyboard_info->vkCode >= 0x32 && keyboard_info->vkCode <= 0x38)
-				|| (keyboard_info->vkCode >= VK_F1 && keyboard_info->vkCode <= VK_F8))
-				;
+			if (1 == HIBYTE(GetKeyState(VK_LCONTROL)) >> 7
+				&& (keyboard_info->vkCode = 0x5a
+				|| keyboard_info->vkCode >= 0x58))
+				if (viewer_)
+					::PostMessage(viewer_, FastKey, keyboard_info->vkCode, 0);
 		}
 	}
-	~IVGAHook();
-
 private:
 	DWORD process_id_;
 	HWND viewer_;

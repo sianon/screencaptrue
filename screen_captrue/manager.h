@@ -5,6 +5,8 @@
 #include "vlc/vlc.h"
 #include "audio_adjust_panel.h"
 #include "msg_head.h"
+#include "hook.h"
+#include <memory>
 #include <atlbase.h>
 #include <vector>
 

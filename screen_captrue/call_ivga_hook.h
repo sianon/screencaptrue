@@ -13,7 +13,7 @@
 #define IVGA_HOOK_API extern "C" __declspec(dllexport)
 #endif
 
-typedef std::function<bool(int, WPARAM, LPARAM)> IvgaFunc;
+typedef std::function<BOOL(int, WPARAM, LPARAM)> IvgaFunc;
 
 enum IVGA_HOOK_TYPE
 {
