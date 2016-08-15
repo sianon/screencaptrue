@@ -14,7 +14,7 @@ public:
 	static void DestroyInstance();
 
 	Syscfg * GetSyscfg() { return &syscfg_; }
-	IvgaEngine* GetIvgaEngine(){ return &ivga_engine_; }
+	IvgaEngine GetIvgaEngine(){ return ivga_engine_; }
 
 private:
 	static ResSingleton* instance_;
