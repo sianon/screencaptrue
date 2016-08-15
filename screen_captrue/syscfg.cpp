@@ -3,6 +3,7 @@
 
 
 Syscfg::Syscfg()
+	: is_load_(false)
 {
 }
 
@@ -19,10 +20,10 @@ bool Syscfg::LoadFile(const WCHAR * path /*= nullptr*/)
 
 	if (doc_.load_file(path_.c_str())) {
 		if (doc_.child("cfginfo"))
-			return true;
+			return is_load_ = true;
 		doc_.reset();
 	}
-	return false;
+	return is_load_ = false;
 }
 
 bool Syscfg::SetPaht(const WCHAR * path /*= nullptr*/)
@@ -65,14 +66,28 @@ pugi::xml_node Syscfg::GetNode(const char * name)
 	return node;
 }
 
-pugi::xml_node Syscfg::GetRunState()
+bool Syscfg::GetRunState()
 {
-	return GetNode("run_state");
+	pugi::xml_node node = GetNode("run_state");
+	pugi::xml_attribute node_attr = node.attribute("serve");
+	if (!node_attr) {
+		node_attr = node.append_attribute("serve");
+		node_attr = true;
+	}
+
+	node_attr = node.attribute("client");
+	if (!node_attr) {
+		node_attr = node.append_attribute("client");
+		node_attr = false;
+		SaveFile();
+	}
+
+	return !node_attr.as_bool();
 }
 
 bool Syscfg::SetRunState(bool attr)
 {
-	pugi::xml_node node = GetRunState();
+	pugi::xml_node node = GetNode("run_state");
 	pugi::xml_attribute node_attr = node.attribute("serve");
 	if (!node_attr)
 		node_attr = node.append_attribute("serve");
@@ -86,14 +101,225 @@ bool Syscfg::SetRunState(bool attr)
 	return SaveFile();
 }
 
-bool Syscfg::SetNodeAttr(string node_n, string attr_n, string value)
+int Syscfg::GetFPS(bool is_push /*= false*/)
 {
-	pugi::xml_node node = GetNode(node_n.c_str());
-	pugi::xml_attribute attr = node.attribute(attr_n.c_str());
+	pugi::xml_node node;
+	if(!is_push)
+		node = GetNode("serve_data");
+	else 
+		node = GetNode("push_data");
+
+	pugi::xml_attribute attr = node.attribute("fps");
+	if (!attr) {
+		attr = node.append_attribute("fps");
+		attr = 25;
+		SaveFile();
+	}
+
+	return attr.as_int();
+}
+
+bool Syscfg::SetFPS(INT value, bool is_push /*= false*/)
+{
+	pugi::xml_node node;
+	if (!is_push)
+		node = GetNode("serve_data");
+	else
+		node = GetNode("push_data");
+
+	pugi::xml_attribute attr = node.attribute("fps");
 	if (!attr)
-		attr = node.append_attribute(attr_n.c_str());
-	attr = value.c_str();
+		attr = node.append_attribute("fps");
+	attr = value;
 
 	return SaveFile();
+}
+
+LPCTSTR Syscfg::GetQuality(bool is_push /*= false*/)
+{
+	pugi::xml_node node;
+	if (!is_push)
+		node = GetNode("serve_data");
+	else
+		node = GetNode("push_data");
+
+	pugi::xml_attribute attr = node.attribute("quality");
+	if (!attr) {
+		attr = node.append_attribute("quality");
+		attr = "7";
+		SaveFile();
+	}
+
+	return MultiToWide(attr.as_string());
+}
+
+bool Syscfg::SetQuality(LPCTSTR value, bool is_push /*= false*/)
+{
+	pugi::xml_node node;
+	if (!is_push)
+		node = GetNode("serve_data");
+	else
+		node = GetNode("push_data");
+
+	pugi::xml_attribute attr = node.attribute("quality");
+	if (!attr)
+		attr = node.append_attribute("quality");
+	char multi[MAX_PATH];
+	attr = WideToMulti(value, multi);
+
+	return SaveFile();
+}
+
+LPCTSTR Syscfg::GetIpaddr(bool is_push)
+{
+	pugi::xml_node node;
+	if (!is_push)
+		node = GetNode("serve_data");
+	else
+		node = GetNode("push_data");
+
+	pugi::xml_attribute attr = node.attribute("ipaddr");
+	if (!attr) {
+		attr = node.append_attribute("ipaddr");
+		if (!is_push)
+			attr = "10.18.3.62";
+		else 
+			attr = "10.18.3.61";
+		SaveFile();
+	}
+
+	return MultiToWide(attr.as_string());
+}
+
+bool Syscfg::SetIpaddr(LPCTSTR value, bool is_push)
+{
+	pugi::xml_node node;
+	if (!is_push)
+		node = GetNode("serve_data");
+	else
+		node = GetNode("push_data");
+
+	pugi::xml_attribute attr = node.attribute("ipaddr");
+	if (!attr)
+		attr = node.append_attribute("ipaddr");
+	if (!is_push)
+		attr = "10.18.3.62";
+	else
+		attr = "10.18.3.61";
+
+	return SaveFile();
+}
+
+LPCTSTR Syscfg::GetPort(bool is_push)
+{
+	pugi::xml_node node;
+	if (!is_push)
+		node = GetNode("serve_data");
+	else
+		node = GetNode("push_data");
+
+	pugi::xml_attribute attr = node.attribute("port");
+	if (!attr) {
+		attr = node.append_attribute("port");
+		attr = "554";
+		SaveFile();
+	}
+
+	return MultiToWide(attr.as_string());
+}
+
+bool Syscfg::SetPort(LPCTSTR value, bool is_push)
+{
+	pugi::xml_node node;
+	if (!is_push)
+		node = GetNode("serve_data");
+	else
+		node = GetNode("push_data");
+
+	pugi::xml_attribute attr = node.attribute("port");
+	if (!attr)
+		attr = node.append_attribute("port");
+	attr = "554";
+
+	return SaveFile();
+}
+
+LPCTSTR Syscfg::GetDir(bool is_push)
+{
+	pugi::xml_node node;
+	if (!is_push)
+		node = GetNode("serve_data");
+	else
+		node = GetNode("push_data");
+
+	pugi::xml_attribute attr = node.attribute("dir_name");
+	if (!attr) {
+		attr = node.append_attribute("dir_name");
+		if (!is_push)
+			attr = "live123";
+		else
+			attr = "push123";
+		SaveFile();
+	}
+
+	return MultiToWide(attr.as_string());
+}
+
+bool Syscfg::SetDir(LPCTSTR value, bool is_push)
+{
+	pugi::xml_node node;
+	if (!is_push)
+		node = GetNode("serve_data");
+	else
+		node = GetNode("push_data");
+
+	pugi::xml_attribute attr = node.attribute("dir_name");
+	if (!attr)
+		attr = node.append_attribute("dir_name");
+	if (!is_push)
+		attr = "live123";
+	else
+		attr = "push123";
+
+	return SaveFile();
+}
+
+void Syscfg::GetStreamInfo(StreamInfo & info)
+{
+	info.dir_name_ = GetDir();
+	info.dir_name_push_ = GetDir(true);
+	info.ip_push_ = GetIpaddr();
+	info.ip_server_ = GetIpaddr(true);
+	info.is_start_serve_ = GetRunState();
+	info.port_ = GetPort();
+	info.port_push_ = GetPort(true);
+	info.screen_fps_ = GetFPS();
+	info.screen_fps_push_ = GetFPS(true);
+	info.screen_quality_ = GetQuality();
+	info.screen_quality_push_ = GetQuality(true);
+}
+
+char * Syscfg::WideToMulti(CDuiString wide, char * multi)
+{
+	ZeroMemory(multi, MAX_PATH);
+	int wide_len = wide.GetLength();
+	int multi_len = WideCharToMultiByte(CP_ACP, NULL, wide.GetData(), wide_len, NULL, 0, NULL, FALSE);
+	::WideCharToMultiByte(CP_ACP, NULL, wide.GetData(), -1, multi, multi_len, NULL, FALSE);
+	return multi;
+}
+
+CDuiString Syscfg::MultiToWide(string multi)
+{
+	int multi_len = multi.length();
+	int wide_len = ::MultiByteToWideChar(CP_ACP, 0, multi.c_str(), -1, NULL, 0);
+	wchar_t *wide_str;
+	wide_str = new wchar_t[wide_len + 1];
+	memset(wide_str, 0, (wide_len + 1) * sizeof(wchar_t));
+	::MultiByteToWideChar(CP_ACP, 0, multi.c_str(), -1, (LPWSTR)wide_str, wide_len);
+
+	CDuiString ret = (wchar_t*)wide_str;
+	delete wide_str;
+
+	return ret;
 }
 

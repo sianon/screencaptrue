@@ -6,8 +6,8 @@
 #include "audio_adjust_panel.h"
 #include "msg_head.h"
 #include "hook.h"
+#include "ivga_engine.h"
 #include <memory>
-#include "syscfg.h"
 #include <atlbase.h>
 #include <vector>
 
@@ -81,11 +81,10 @@ private:
 	void ToTray();
 	void SetAutoRun(bool bautorun);
 	void GetLocalIPAddr(vector<wstring> & id_addr);
+	void FillFPSAndQuality();
 
 private:
-
-	StreamDataInfo stream_data_info_;
-
 	libvlc_instance_t* vlc_;
 	AudioAdjustPanel audio_panel_;
+	IvgaEngine engine_;
 };

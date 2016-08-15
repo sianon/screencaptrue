@@ -10,17 +10,6 @@
 Manager::Manager()
 	: vlc_(nullptr) 
 {
-	stream_data_info_.is_start_serve = true;
-	stream_data_info_.is_start_client = false;
-	stream_data_info_.screen_fps = 25;
-	stream_data_info_.screen_fps_old = 0;
-	stream_data_info_.screen_quality = _T("0.8");
-	stream_data_info_.screen_quality_old = _T("0");
-	stream_data_info_.media_name = "screen";
-	stream_data_info_.dir_name = _T("live123");
-	stream_data_info_.port = _T("554");
-	stream_data_info_.ip_server = _T("");
-	stream_data_info_.ip_push = _T("10.18.3.61");
 }
 
 Manager::~Manager()
@@ -29,6 +18,8 @@ Manager::~Manager()
 
 LRESULT Manager::OnInit()
 {
+	engine_.InitStreamInfo();
+
 	OptTabInit();
 	ServeTabInit();
 	AVSTabInit();
@@ -54,30 +45,30 @@ void Manager::ServeTabInit()
 		live_addr_combo->Add(elemen);
 	}
 
-	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("serve_radio")))->Selected(stream_data_info_.is_start_serve);
-	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("push_radio")))->Selected(stream_data_info_.is_start_client);
-	m_PaintManager.FindControl(_T("live_address"))->SetEnabled(stream_data_info_.is_start_serve);
+	bool is_start_serve = engine_.GetIsServerState();
+	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("serve_radio")))->Selected(is_start_serve);
+	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("push_radio")))->Selected(!is_start_serve);
+	m_PaintManager.FindControl(_T("live_address"))->SetEnabled(is_start_serve);
 
-	m_PaintManager.FindControl(_T("live_port_edit"))->SetEnabled(stream_data_info_.is_start_serve);
-	m_PaintManager.FindControl(_T("live_port_edit"))->SetText(stream_data_info_.port);
+	m_PaintManager.FindControl(_T("live_port_edit"))->SetEnabled(is_start_serve);
+	m_PaintManager.FindControl(_T("live_port_edit"))->SetText(engine_.GetPort());
 
-	m_PaintManager.FindControl(_T("live_dir_edit"))->SetEnabled(stream_data_info_.is_start_serve);
-	m_PaintManager.FindControl(_T("live_dir_edit"))->SetText(stream_data_info_.dir_name);
+	m_PaintManager.FindControl(_T("live_dir_edit"))->SetEnabled(is_start_serve);
+	m_PaintManager.FindControl(_T("live_dir_edit"))->SetText(engine_.GetDir());
 
-	m_PaintManager.FindControl(_T("push_address"))->SetEnabled(stream_data_info_.is_start_client);
-	m_PaintManager.FindControl(_T("push_address"))->SetText(stream_data_info_.ip_push);
+	m_PaintManager.FindControl(_T("push_address"))->SetEnabled(!is_start_serve);
+	m_PaintManager.FindControl(_T("push_address"))->SetText(engine_.GetIpaddr(true));
 
-	m_PaintManager.FindControl(_T("push_port_edit"))->SetEnabled(stream_data_info_.is_start_client);
-	m_PaintManager.FindControl(_T("push_port_edit"))->SetText(stream_data_info_.port);
+	m_PaintManager.FindControl(_T("push_port_edit"))->SetEnabled(!is_start_serve);
+	m_PaintManager.FindControl(_T("push_port_edit"))->SetText(engine_.GetPort(true));
 
-	m_PaintManager.FindControl(_T("push_dir_edit"))->SetEnabled(stream_data_info_.is_start_client);
-	m_PaintManager.FindControl(_T("push_dir_edit"))->SetText(stream_data_info_.dir_name);
+	m_PaintManager.FindControl(_T("push_dir_edit"))->SetEnabled(!is_start_serve);
+	m_PaintManager.FindControl(_T("push_dir_edit"))->SetText(engine_.GetDir(true));
 }
 
 void Manager::AVSTabInit()
 {
-	static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("frame_rate")))->SelectItem(stream_data_info_.screen_fps / 5 - 1);
-	static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("quality")))->SelectItem(7);
+	FillFPSAndQuality();
 }
 
 LRESULT Manager::OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled)
@@ -121,18 +112,13 @@ void Manager::OnClickSysBtn(TNotifyUI & msg, bool & handled)
 
 void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 {
-	ResSingleton::GetInstance()->GetIvgaEngine()->StartServe();
-	//if (stream_data_info_.is_start_serve) {
-	//	ScreenServe();
-	//} else {
-	//	ScreenPush();
-	//}
+	engine_.StartServe();
 	SendMessage(WM_SYSCOMMAND, SC_MINIMIZE, 0);
 }
 
 void Manager::OnClickEndBtn(TNotifyUI & msg, bool & handled)
 {
-	ResSingleton::GetInstance()->GetIvgaEngine()->OnDestory();
+	engine_.OnDestory();
 }
 
 void Manager::OnTabSelectChanged(TNotifyUI & msg, bool & handled)
@@ -158,35 +144,35 @@ void Manager::OnTabServeChanged(TNotifyUI & msg, bool & handled)
 {
 	CDuiString name = msg.pSender->GetName();
 	if (name == _T("serve_radio")) {
-		stream_data_info_.is_start_serve = true;
-		stream_data_info_.is_start_client = false;
+		engine_.SetIsStartServe(true);
 		m_PaintManager.FindControl(_T("live_address"))->SetEnabled(true);
 		m_PaintManager.FindControl(_T("live_port_edit"))->SetEnabled(true);
 		m_PaintManager.FindControl(_T("live_dir_edit"))->SetEnabled(true);
 		m_PaintManager.FindControl(_T("push_address"))->SetEnabled(false);
 		m_PaintManager.FindControl(_T("push_port_edit"))->SetEnabled(false);
 		m_PaintManager.FindControl(_T("push_dir_edit"))->SetEnabled(false);
+		FillFPSAndQuality();
 	} else if (name == _T("push_radio")) {
-		stream_data_info_.is_start_serve = false;
-		stream_data_info_.is_start_client = true;
+		engine_.SetIsStartServe(false);
 		m_PaintManager.FindControl(_T("live_address"))->SetEnabled(false);
 		m_PaintManager.FindControl(_T("live_port_edit"))->SetEnabled(false);
 		m_PaintManager.FindControl(_T("live_dir_edit"))->SetEnabled(false);
 		m_PaintManager.FindControl(_T("push_address"))->SetEnabled(true);
 		m_PaintManager.FindControl(_T("push_port_edit"))->SetEnabled(true);
 		m_PaintManager.FindControl(_T("push_dir_edit"))->SetEnabled(true);
+		FillFPSAndQuality();
 	} else if (name == _T("live_address")) {
-		stream_data_info_.ip_server = msg.pSender->GetText();
+		engine_.SetIpaddr(msg.pSender->GetText());
 	} else if (name == _T("live_port_edit")) {
-		stream_data_info_.port = msg.pSender->GetText();
+		engine_.SetPort(msg.pSender->GetText());
 	} else if (name == _T("live_dir_edit")) {
-		stream_data_info_.dir_name = msg.pSender->GetText();
+		engine_.SetDir(msg.pSender->GetText());
 	} else if (name == _T("push_address")) {
-		stream_data_info_.ip_push = msg.pSender->GetText();
+		engine_.SetIpaddr(msg.pSender->GetText(), true);
 	} else if (name == _T("push_port_edit")) {
-		stream_data_info_.port = msg.pSender->GetText();
+		engine_.SetPort(msg.pSender->GetText(), true);
 	} else if (name == _T("push_dir_edit")) {
-		stream_data_info_.dir_name = msg.pSender->GetText();
+		engine_.SetDir(msg.pSender->GetText(), true);
 	}
 }
 
@@ -194,16 +180,9 @@ void Manager::OnTabAVSChanged(TNotifyUI & msg, bool & handled)
 {
 	CDuiString name = msg.pSender->GetName();
 	if (name == _T("frame_rate")) {
-		stream_data_info_.screen_fps_old = stream_data_info_.screen_fps;
-		stream_data_info_.screen_fps = _ttoi(msg.pSender->GetText());
+		engine_.SetFPS(_ttoi(msg.pSender->GetText()), !engine_.GetIsServerState());
 	} else if (name == _T("quality")) {
-		stream_data_info_.screen_quality_old = stream_data_info_.screen_quality;
-		char temp[20];
-		double qua = _ttoi(msg.pSender->GetText()) / 10.0;
-		sprintf_s(temp, "%.2lf", qua);
-		CDuiString cds_temp;
-		cds_temp = temp;
-		stream_data_info_.screen_quality = cds_temp.GetData();
+		engine_.SetQuality(msg.pSender->GetText(), !engine_.GetIsServerState());
 	}
 }
 
@@ -269,4 +248,36 @@ void Manager::GetLocalIPAddr(vector<wstring> & ip_addr)
 			pIpAdapterInfo = pIpAdapterInfo->Next;
 		}
 	}
+}
+
+void Manager::FillFPSAndQuality()
+{
+	int index = 0;
+	switch (engine_.GetFPS(!engine_.GetIsServerState()))
+	{
+		case 5: index = 0; break;
+		case 10:index = 1; break;
+		case 15:index = 2; break;
+		case 20:index = 3; break;
+		case 25:index = 4; break;
+		case 30:index = 5; break;
+		default:index = 4; break;
+	}
+	static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("frame_rate")))->SelectItem(index);
+
+	switch (_ttoi(engine_.GetQuality(!engine_.GetIsServerState())))
+	{
+		case 1: index = 0; break;
+		case 2: index = 1; break;
+		case 3: index = 2; break;
+		case 4: index = 3; break;
+		case 5: index = 4; break;
+		case 6: index = 5; break;
+		case 7: index = 6; break;
+		case 8: index = 7; break;
+		case 9: index = 8; break;
+		case 10: index = 9; break;
+		default: index = 7; break;
+	}
+	static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("quality")))->SelectItem(index);
 }
