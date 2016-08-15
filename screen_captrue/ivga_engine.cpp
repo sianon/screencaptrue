@@ -2,7 +2,7 @@
 
 
 IvgaEngine::IvgaEngine()
-	//: is_start_serve_(false)
+	: media_name_("IVGA")
 {
 }
 IvgaEngine::~IvgaEngine()
@@ -58,6 +58,8 @@ void IvgaEngine::StartClient()
 
 void IvgaEngine::OnDestory()
 {
+	if (!vlc_)
+		return;
 	libvlc_vlm_stop_media(vlc_, media_name_);
 	libvlc_vlm_release(vlc_);
 }
