@@ -2,7 +2,8 @@
 #include "res_singleton.h"
 
 IvgaEngine::IvgaEngine()
-	: media_name_("media")
+	: media_name_("IVGA")
+
 {
 	cfg_.LoadFile();
 }
@@ -176,6 +177,8 @@ void IvgaEngine::StartClient()
 
 void IvgaEngine::OnDestory()
 {
+	if (!vlc_)
+		return;
 	libvlc_vlm_stop_media(vlc_, media_name_);
 	libvlc_vlm_release(vlc_);
 }
@@ -209,7 +212,7 @@ void IvgaEngine::ProcessPush()
 {
 	string screen_fps("--screen-fps=");
 	char fps[3];
-	_itoa_s(stream_info_.screen_fps_, fps, 3, 10);
+	_itoa_s(stream_info_.screen_fps_push_, fps, 3, 10);
 	screen_fps.append(fps);
 
 	const char * const argv[] = {
@@ -222,8 +225,8 @@ void IvgaEngine::ProcessPush()
 	wstring third_part = L"}:standard{access=udp, mux=ts, dst=";
 	wstring ip_push = stream_info_.ip_push_.GetData();
 	wstring double_dot = L":";
-	wstring port = stream_info_.port_.GetData();
-	wstring last_part = stream_info_.dir_name_.GetData();
+	wstring port = stream_info_.port_push_.GetData();
+	wstring last_part = stream_info_.dir_name_push_.GetData();
 	wstring sout = first_part + scale + third_part + ip_push + double_dot + port + L"/" + last_part + L"}";
 
 	vlc_ = libvlc_new(sizeof(argv) / sizeof(argv[0]), argv);
