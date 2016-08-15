@@ -78,10 +78,6 @@ private:
 	void OnTabAVSChanged(TNotifyUI &msg, bool &handled);
 
 private:
-	void ScreenServe();
-	void ScreenPush();
-	void OnExit();
-	void Play();
 	void ToTray();
 	void SetAutoRun(bool bautorun);
 	void GetLocalIPAddr(vector<wstring> & id_addr);

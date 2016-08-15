@@ -10,12 +10,19 @@
 
 struct StreamInfo
 {
+	bool is_start_serve_;
+
 	INT screen_fps_;
 	CDuiString port_;
 	CDuiString dir_name_;
-	CDuiString ip_push_;
 	CDuiString ip_server_;
 	CDuiString screen_quality_;
+
+	CDuiString ip_push_;
+	INT screen_fps_push_;
+	CDuiString port_push_;
+	CDuiString dir_name_push_;
+	CDuiString screen_quality_push_;
 
 	bool operator==(const StreamInfo stream){
 		return(stream.screen_fps_ == screen_fps_
@@ -41,6 +48,7 @@ public:
 	bool SetKeyBoardHook()
 	{
 		keyboard_Hook_->SetIvgaKeyboardHook();
+		return true;
 	}
 	bool UnKeyboardHook(){
 		return keyboard_Hook_->UnIvgaKeyboardHook();
@@ -55,15 +63,14 @@ public:
 
 	void StartServe();
 	void StartClient();
+	void OnDestory();
 
 	StreamInfo GetStreamInfo();
 	bool GetServerState();
 private:
-	void OnDestory();
 	void ProcessServer();
 	void ProcessPush();
 
-	bool is_start_serve_;
 	const char* media_name_;
 	StreamInfo stream_info_, stream_info_old_;
 	libvlc_instance_t* vlc_;

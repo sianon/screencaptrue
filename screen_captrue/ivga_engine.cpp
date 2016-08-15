@@ -2,6 +2,7 @@
 
 
 IvgaEngine::IvgaEngine()
+	//: is_start_serve_(false)
 {
 }
 IvgaEngine::~IvgaEngine()
@@ -21,12 +22,14 @@ StreamInfo IvgaEngine::GetStreamInfo()
 
 bool IvgaEngine::GetServerState()
 {
-	return is_start_serve_;
+	return stream_info_.is_start_serve_;
 }
 
 void IvgaEngine::StartServe()
 {
-	if (is_start_serve_){
+//	is_start_serve_ = true;
+
+	if (stream_info_.is_start_serve_){
 		if (!vlc_){
 			ProcessServer();
 		}else{
@@ -37,12 +40,10 @@ void IvgaEngine::StartServe()
 		}
 	}
 
-	is_start_serve_ = true;
-
 }
 void IvgaEngine::StartClient()
 {
-	if (is_start_serve_){
+	if (stream_info_.is_start_serve_){
 		OnDestory();
 	}else{
 		if (!(stream_info_ == stream_info_old_)){
@@ -52,7 +53,7 @@ void IvgaEngine::StartClient()
 		return;
 	}
 
-	is_start_serve_ = false;
+	stream_info_.is_start_serve_ = false;
 }
 
 void IvgaEngine::OnDestory()

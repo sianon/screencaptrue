@@ -2,6 +2,7 @@
 #define __RES_SINGLETON_H__
 
 #include "syscfg.h"
+#include "ivga_engine.h"
 
 class ResSingleton
 {
@@ -13,10 +14,12 @@ public:
 	static void DestroyInstance();
 
 	Syscfg * GetSyscfg() { return &syscfg_; }
+	IvgaEngine* GetIvgaEngine(){ return &ivga_engine_; }
 
 private:
 	static ResSingleton* instance_;
 	Syscfg syscfg_;
+	IvgaEngine ivga_engine_;
 };
 
 #endif // !__RES_SINGLETON_H__

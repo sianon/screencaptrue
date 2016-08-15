@@ -117,6 +117,7 @@
     <ClCompile Include="audio_adjust_panel.cpp" />
     <ClCompile Include="base_window.cpp" />
     <ClCompile Include="ivga.cpp" />
+    <ClCompile Include="ivga_engine.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="native_control_ui.cpp" />
     <ClCompile Include="res_singleton.cpp" />

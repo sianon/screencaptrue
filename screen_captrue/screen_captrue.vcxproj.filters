@@ -96,5 +96,8 @@
     <ClCompile Include="syscfg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ivga_engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

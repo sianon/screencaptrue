@@ -121,17 +121,18 @@ void Manager::OnClickSysBtn(TNotifyUI & msg, bool & handled)
 
 void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 {
-
-	if (stream_data_info_.is_start_serve) {
-		ScreenServe();
-	} else {
-		ScreenPush();
-	}
+	ResSingleton::GetInstance()->GetIvgaEngine()->StartServe();
+	//if (stream_data_info_.is_start_serve) {
+	//	ScreenServe();
+	//} else {
+	//	ScreenPush();
+	//}
 	SendMessage(WM_SYSCOMMAND, SC_MINIMIZE, 0);
 }
 
 void Manager::OnClickEndBtn(TNotifyUI & msg, bool & handled)
 {
+	ResSingleton::GetInstance()->GetIvgaEngine()->OnDestory();
 }
 
 void Manager::OnTabSelectChanged(TNotifyUI & msg, bool & handled)
@@ -204,88 +205,6 @@ void Manager::OnTabAVSChanged(TNotifyUI & msg, bool & handled)
 		cds_temp = temp;
 		stream_data_info_.screen_quality = cds_temp.GetData();
 	}
-}
-
-void Manager::ScreenServe()
-{
-	if (stream_data_info_.is_start_serve) {
-		if (!vlc_) {
-			Play();
-		} else {
-			if (!(stream_data_info_.screen_fps_old == stream_data_info_.screen_fps) 
-				|| !(_tcscmp(stream_data_info_.screen_quality, stream_data_info_.screen_quality_old) == 0)) {
-				OnExit();
-				Play();
-			}
-		}
-	}
-
-	stream_data_info_.is_start_serve = true;
-}
-
-void Manager::ScreenPush()
-{	
-	if (stream_data_info_.is_start_serve) {
-		OnExit();
-	}
-
-	stream_data_info_.is_start_serve = false;
-
-	string screen_fps("--screen-fps=");
-	char fps[3];
-	_itoa_s(stream_data_info_.screen_fps, fps, 3, 10);
-	screen_fps.append(fps);
-
-	const char * const argv[] = {
-		screen_fps.c_str(),
-	};
-
-	const char* url = "Screen://";
-	wstring first_part = L"#transcode{vcodec=mp4v,acodec=none,vb=16,threads=2,scale=";
-	wstring scale = stream_data_info_.screen_quality;
-	wstring third_part = L"}:standard{access=udp, mux=ts, dst=";
-	wstring ip_push = stream_data_info_.ip_push;
-	wstring double_dot = L":";
-	wstring port = stream_data_info_.port;
-	wstring last_part = stream_data_info_.dir_name;
-	wstring sout = first_part + scale + third_part + ip_push + double_dot + port + L"/" + last_part + L"}";
-
-	vlc_ = libvlc_new(sizeof(argv) / sizeof(argv[0]), argv);
-	libvlc_vlm_add_broadcast(vlc_, stream_data_info_.media_name, url, CW2A(sout.c_str()), 0, NULL, true, false);
-	libvlc_vlm_play_media(vlc_, stream_data_info_.media_name);
-}
-
-void Manager::OnExit()
-{
-	libvlc_vlm_stop_media(vlc_, stream_data_info_.media_name);
-	libvlc_vlm_release(vlc_);
-}
-
-void Manager::Play()
-{
-	string screen_fps("--screen-fps=");
-	char fps[3];
-	_itoa_s(stream_data_info_.screen_fps, fps, 3, 10);
-	screen_fps.append(fps);
-
-	const char * const argv[] = {
-		screen_fps.c_str(),
-		"--screen-follow-mouse",
-	};
-
-	const char* url = "Screen://";
-	wstring first_part = L"#transcode{vcodec=mp4v,acodec=none,vb=16,threads=2,scale=";
-	wstring scale = stream_data_info_.screen_quality;
-	wstring third_part = L"}:duplicate{dst=rtp{sdp=rtsp://";
-	wstring ip_server = stream_data_info_.ip_server;
-	wstring double_dot = L":";
-	wstring port = stream_data_info_.port;
-	wstring last_part = stream_data_info_.dir_name;
-	wstring sout = first_part + scale + third_part + ip_server + double_dot + port + L"/" + last_part + L"}}";
-
-	vlc_ = libvlc_new(sizeof(argv) / sizeof(argv[0]), argv);
-	libvlc_vlm_add_broadcast(vlc_, stream_data_info_.media_name, url, CW2A(sout.c_str()), 0, NULL, true, false);
-	libvlc_vlm_play_media(vlc_, stream_data_info_.media_name);
 }
 
 void Manager::ToTray()
