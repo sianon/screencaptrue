@@ -30,7 +30,11 @@ struct StreamInfo
 			&& stream.dir_name_ == dir_name_
 			&& stream.ip_push_ == ip_push_
 			&& stream.ip_server_ == ip_server_
-			&& stream.screen_quality_ == screen_quality_);
+			&& stream.screen_quality_ == screen_quality_
+			&& stream.screen_fps_push_ == screen_fps_push_
+			&& stream.port_push_ == port_push_
+			&& stream.dir_name_push_ == dir_name_push_
+			&& stream.screen_quality_push_ == dir_name_push_);
 	}
 };
 
