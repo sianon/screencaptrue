@@ -202,10 +202,8 @@ bool Syscfg::SetIpaddr(LPCTSTR value, bool is_push)
 	pugi::xml_attribute attr = node.attribute("ipaddr");
 	if (!attr)
 		attr = node.append_attribute("ipaddr");
-	if (!is_push)
-		attr = "10.18.3.62";
-	else
-		attr = "10.18.3.61";
+	char multi[MAX_PATH];
+	attr = WideToMulti(value, multi);
 
 	return SaveFile();
 }
@@ -239,7 +237,8 @@ bool Syscfg::SetPort(LPCTSTR value, bool is_push)
 	pugi::xml_attribute attr = node.attribute("port");
 	if (!attr)
 		attr = node.append_attribute("port");
-	attr = "554";
+	char multi[MAX_PATH];
+	attr = WideToMulti(value, multi);
 
 	return SaveFile();
 }
@@ -276,10 +275,8 @@ bool Syscfg::SetDir(LPCTSTR value, bool is_push)
 	pugi::xml_attribute attr = node.attribute("dir_name");
 	if (!attr)
 		attr = node.append_attribute("dir_name");
-	if (!is_push)
-		attr = "live123";
-	else
-		attr = "push123";
+	char multi[MAX_PATH];
+	attr = WideToMulti(value, multi);
 
 	return SaveFile();
 }
