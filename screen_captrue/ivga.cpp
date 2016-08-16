@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "manager.h"
 #include "ivga_engine.h"
+#include "hook.h"
+
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -9,31 +11,18 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
-	/*
-	CPaintManagerUI::SetInstance(hInstance);
-	CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath() + _T("skin"));
-
-	// TODO: Place code here.
-
-	ScreenCapture screen_capture_wnd;
-	screen_capture_wnd.Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
-	screen_capture_wnd.CenterWindow();
-	screen_capture_wnd.ShowModal();
-
-	delete screen_capture_wnd;
-	//Initialize global strings
-	*/
-
 	
 	CPaintManagerUI::SetInstance(hInstance);
 	CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath() + _T("skin_1"));	
 
-	IvgaEngine ivgatest;
 	Manager manager;
-	//ivgatest.SetViewer(manager);
-	//ivgatest.SetInterceptMsg();
-	//ivgatest.SetKeyBoardHook();
+	IVGAHook ivga_;
+
+
 	manager.Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
+	ivga_.SetViewer(manager);
+	ivga_.SetIvgaInterceptMsg(true);
+	ivga_.SetIvgaKeyboardHook();
 	manager.CenterWindow();
 	manager.ShowModal();
 	/**/

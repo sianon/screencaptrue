@@ -4,7 +4,6 @@ ResSingleton* ResSingleton::instance_ = nullptr;
 
 ResSingleton::ResSingleton()
 {
-	syscfg_.LoadFile();
 }
 
 ResSingleton* ResSingleton::GetInstance()
@@ -19,3 +18,10 @@ void ResSingleton::DestroyInstance()
 		instance_ = nullptr;
 	}
 }
+
+//Syscfg * ResSingleton::GetSyscfg()
+//{
+//	if (!syscfg_.GetIsLoad())
+//		syscfg_.LoadFile();
+//	return &syscfg_;
+//}

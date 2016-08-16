@@ -4,39 +4,10 @@
 #include "vlc/vlc.h"
 #include "stdafx.h"
 #include "hook.h"
+#include "syscfg.h"
 #include <vector>
 #include <atlbase.h>
 #include <memory>
-
-struct StreamInfo
-{
-	bool is_start_serve_;
-
-	INT screen_fps_;
-	CDuiString port_;
-	CDuiString dir_name_;
-	CDuiString ip_server_;
-	CDuiString screen_quality_;
-
-	CDuiString ip_push_;
-	INT screen_fps_push_;
-	CDuiString port_push_;
-	CDuiString dir_name_push_;
-	CDuiString screen_quality_push_;
-
-	bool operator==(const StreamInfo stream){
-		return(stream.screen_fps_ == screen_fps_
-			&& stream.port_ == port_
-			&& stream.dir_name_ == dir_name_
-			&& stream.ip_push_ == ip_push_
-			&& stream.ip_server_ == ip_server_
-			&& stream.screen_quality_ == screen_quality_
-			&& stream.screen_fps_push_ == screen_fps_push_
-			&& stream.port_push_ == port_push_
-			&& stream.dir_name_push_ == dir_name_push_
-			&& stream.screen_quality_push_ == dir_name_push_);
-	}
-};
 
 class IvgaEngine
 {
@@ -63,6 +34,7 @@ public:
 
 	}
 
+	void InitStreamInfo();
 	void SetStreamInfo(StreamInfo stream_info);
 
 	void StartServe();
@@ -70,15 +42,36 @@ public:
 	void OnDestory();
 
 	StreamInfo GetStreamInfo();
-	bool GetServerState();
+
+public:
+	void SetIsStartServe(bool start);
+	bool GetIsServerState();
+
+	void SetFPS(INT value, bool is_push = false);
+	INT GetFPS(bool is_push = false);
+
+	void SetQuality(LPCTSTR value, bool is_push = false);
+	LPCTSTR GetQuality(bool is_push = false);
+
+	void SetIpaddr(LPCTSTR value, bool is_push = false);
+	LPCTSTR GetIpaddr(bool is_push = false);
+
+	void SetPort(LPCTSTR value, bool is_push = false);
+	LPCTSTR GetPort(bool is_push = false);
+
+	void SetDir(LPCTSTR value, bool is_push = false);
+	LPCTSTR GetDir(bool is_push = false);
+
+	std::unique_ptr<IVGAHook> keyboard_Hook_;
 private:
 	void ProcessServer();
 	void ProcessPush();
+	CDuiString ChangeQuality(LPCTSTR value);
 
 	const char* media_name_;
 	StreamInfo stream_info_, stream_info_old_;
 	libvlc_instance_t* vlc_;
-	std::unique_ptr<IVGAHook> keyboard_Hook_;
+	Syscfg cfg_;
 };
 
 #endif // !__IVGA_ENGINE_H__

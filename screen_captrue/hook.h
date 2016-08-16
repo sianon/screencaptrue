@@ -2,6 +2,7 @@
 #define __HOOK_H__
 
 #include "call_ivga_hook.h"
+#include "common_defs.h"
 
 #pragma comment(lib, "ivga_hook.lib")
 
@@ -14,7 +15,8 @@ class IVGAHook
 {
 public:
 	IVGAHook() : viewer_(nullptr){
-		process_id_ = GetCurrentThreadId();
+		process_id_ = GetCurrentProcessId();
+		
 		enable_shortcut_key_ = false;
 	}
 	void SetViewer(HWND hwnd){
@@ -38,28 +40,34 @@ public:
 	}
 	BOOL HookKeyboardCallBack(int code, WPARAM wparam, LPARAM lparam)
 	{
+		debugPrintf(_T("KEY_call\n"));
 		DWORD keyboard_msg = wparam;
 		KBDLLHOOKSTRUCT* keyboard_info = (KBDLLHOOKSTRUCT*)lparam;
 		DWORD process_id;
 		HWND hwnd = GetForegroundWindow();
 		GetWindowThreadProcessId(hwnd, &process_id);
-		if (process_id_ != process_id)
+		if (process_id_ != process_id){
+			debugPrintf(_T("KEY_return\n"));
 			return TRUE;
+		}
 		if (!enable_shortcut_key_ && keyboard_info->vkCode != 0x23)
 		return TRUE;
 		HWND focus_hwnd = GetFocus();
 		wchar_t class_name_buf[128];
 		GetClassName(focus_hwnd, class_name_buf, 128);
 
-		if (!wcscmp(L"EditWnd", class_name_buf) || !wcscmp(L"Edit", class_name_buf))
-			return TRUE;
-
 		if (keyboard_msg == WM_KEYUP){
+
+			if (1 == HIBYTE(GetKeyState(VK_LCONTROL)) >> 7)
+				debugPrintf(_T("KEY_ctrl_up\n"));
+
 			if (1 == HIBYTE(GetKeyState(VK_LCONTROL)) >> 7
-				&& (keyboard_info->vkCode = 0x5a
-				|| keyboard_info->vkCode >= 0x58))
+				&& (keyboard_info->vkCode == 0x5a
+				|| keyboard_info->vkCode == 0x58)){
 				if (viewer_)
 					::PostMessage(viewer_, FastKey, keyboard_info->vkCode, 0);
+				debugPrintf(_T("KEY_post\n"));
+			}
 		}
 	}
 private:
