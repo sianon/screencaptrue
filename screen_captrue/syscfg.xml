@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0"?>
 <cfginfo name="true" version="true">
+  <serve_data dir_name="live124" ipaddr="10.18.3.62" port="554" fps="25" quality="7" />
+  <push_data dir_name="push123" ipaddr="10.18.3.61" port="554" fps="25" quality="7" />
   <run_state serve="true" client="false" />
-  <serve_data port="554" dir_name="live123" fps="25" quality="8" ipaddr="10.18.3.233" />
-  <push_data ipaddr="10.18.3.61" port="554" dir_name="push123" fps="25" quality="1" />
 </cfginfo>
