@@ -2,6 +2,7 @@
 #include "manager.h"
 #include "ivga_engine.h"
 #include "hook.h"
+#include "encrypt.h"
 
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
@@ -17,7 +18,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	Manager manager;
 	IVGAHook ivga_;
-
 
 	manager.Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
 	ivga_.SetViewer(manager);

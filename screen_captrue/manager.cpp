@@ -214,7 +214,7 @@ void Manager::ToTray()
 	wnd_to_tray.uID = IDR_MAINFRAME;
 	wnd_to_tray.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
 	wnd_to_tray.uCallbackMessage = kAM_ShowTaskMsg;
-	wnd_to_tray.hIcon = (HICON)LoadImage(NULL, L"screen_captrue.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
+	wnd_to_tray.hIcon = (HICON)LoadImage(NULL, L"small.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
 
 	wcscpy_s(wnd_to_tray.szTip, L"成都天狐威视IVGA");
 	Shell_NotifyIcon(NIM_ADD, &wnd_to_tray);

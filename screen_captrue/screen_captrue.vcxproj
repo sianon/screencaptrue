@@ -103,6 +103,7 @@
     <ClInclude Include="auto_hide_wnd.h" />
     <ClInclude Include="base_window.h" />
     <ClInclude Include="common_defs.h" />
+    <ClInclude Include="encrypt.h" />
     <ClInclude Include="hook.h" />
     <ClInclude Include="ivga_engine.h" />
     <ClInclude Include="manager.h" />
