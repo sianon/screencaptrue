@@ -182,9 +182,9 @@ LPCTSTR Syscfg::GetIpaddr(bool is_push)
 	if (!attr) {
 		attr = node.append_attribute("ipaddr");
 		if (!is_push)
-			attr = "10.18.3.62";
+			attr = "127.0.0.1";
 		else 
-			attr = "10.18.3.61";
+			attr = "127.0.0.1";
 		SaveFile();
 	}
 
