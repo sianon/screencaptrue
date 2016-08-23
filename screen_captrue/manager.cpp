@@ -4,6 +4,7 @@
 #include <WinSock2.h>
 #include <IPHlpApi.h>
 #include <sstream>
+#include "resource.h"
 
 #pragma comment(lib,"Iphlpapi.lib")
 
@@ -24,7 +25,7 @@ LRESULT Manager::OnInit()
 	AVSTabInit();
 
 	audio_panel_.CreateWithDefaultStyle(m_hWnd);
-	
+	PostMessage(kAM_Init, 0, 0);
 	return 0;
 }
 
@@ -37,11 +38,24 @@ void Manager::ServeTabInit()
 	vector<wstring> ip_addrs;
 	GetLocalIPAddr(ip_addrs);
 	PDUI_COMBO live_addr_combo = static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("live_address")));
-	PDUI_LISTLABELELEM elemen;
+	
+	PDUI_LISTLABELELEM elemen = new CListLabelElementUI;
+	elemen->SetText(_T("127.0.0.1"));
+	live_addr_combo->Add(elemen);
+	
+	bool flag = false;
+	CDuiString live_ip_str = engine_.GetIpaddr();
 	for (auto iter : ip_addrs) {
 		elemen = new CListLabelElementUI;
 		elemen->SetText(iter.c_str());
 		live_addr_combo->Add(elemen);
+		if (iter == live_ip_str.GetData()) {
+			live_addr_combo->SelectItem(live_addr_combo->GetCount() - 1);
+			flag = true;
+		}
+	}
+	if (!flag) {
+		live_addr_combo->SelectItem(0);
 	}
 
 	bool is_start_serve = engine_.GetIsServerState();
@@ -70,6 +84,15 @@ void Manager::AVSTabInit()
 	FillFPSAndQuality();
 }
 
+LRESULT Manager::OnInitMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled)
+{
+	::SendMessage(*this, WM_SETICON, ICON_BIG, (LPARAM)LoadIcon((HINSTANCE)GetWindowLongPtr(m_hWnd, GWLP_HINSTANCE), MAKEINTRESOURCE(IDI_ICON1)));
+	
+	ToTray();
+	this->ShowWindow(SW_HIDE);
+	return LRESULT();
+}
+
 LRESULT Manager::OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled)
 {
 	if (wparam != IDR_MAINFRAME)
@@ -95,6 +118,24 @@ LRESULT Manager::OnPopMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandl
 {
 	if (uMsg == kAM_ExitForPop)
 		PostMessage(WM_SYSCOMMAND, SC_CLOSE, 0);
+	else if (uMsg == kAM_MainForPop)
+		this->ShowWindow(true);
+	else if (uMsg == kAM_BeginForPop) {
+		engine_.StartServe();
+		m_PaintManager.FindControl(_T("auto_start"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("min_start"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("live"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("live_and_videos"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("begin_btn"))->SetEnabled(false);
+	}
+	else if (uMsg == kAM_EndForPop) {
+		engine_.OnDestory();
+		m_PaintManager.FindControl(_T("auto_start"))->SetEnabled(true);
+		m_PaintManager.FindControl(_T("min_start"))->SetEnabled(true);
+		m_PaintManager.FindControl(_T("live"))->SetEnabled(true);
+		m_PaintManager.FindControl(_T("live_and_videos"))->SetEnabled(true);
+		m_PaintManager.FindControl(_T("begin_btn"))->SetEnabled(true);
+	}
 
 	return LRESULT();
 }
@@ -133,11 +174,21 @@ void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 {
 	engine_.StartServe();
 	SendMessage(WM_SYSCOMMAND, SC_MINIMIZE, 0);
+	m_PaintManager.FindControl(_T("auto_start"))->SetEnabled(false);
+	m_PaintManager.FindControl(_T("min_start"))->SetEnabled(false);
+	m_PaintManager.FindControl(_T("live"))->SetEnabled(false);
+	m_PaintManager.FindControl(_T("live_and_videos"))->SetEnabled(false);
+	m_PaintManager.FindControl(_T("begin_btn"))->SetEnabled(false);
 }
 
 void Manager::OnClickEndBtn(TNotifyUI & msg, bool & handled)
 {
 	engine_.OnDestory();
+	m_PaintManager.FindControl(_T("auto_start"))->SetEnabled(true);
+	m_PaintManager.FindControl(_T("min_start"))->SetEnabled(true);
+	m_PaintManager.FindControl(_T("live"))->SetEnabled(true);
+	m_PaintManager.FindControl(_T("live_and_videos"))->SetEnabled(true);
+	m_PaintManager.FindControl(_T("begin_btn"))->SetEnabled(true);
 }
 
 void Manager::OnTabSelectChanged(TNotifyUI & msg, bool & handled)
@@ -214,7 +265,7 @@ void Manager::ToTray()
 	wnd_to_tray.uID = IDR_MAINFRAME;
 	wnd_to_tray.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
 	wnd_to_tray.uCallbackMessage = kAM_ShowTaskMsg;
-	wnd_to_tray.hIcon = (HICON)LoadImage(NULL, L"small.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
+	wnd_to_tray.hIcon = LoadIcon((HINSTANCE)GetWindowLongPtr(m_hWnd, GWLP_HINSTANCE),MAKEINTRESOURCE(IDI_ICON1));
 
 	wcscpy_s(wnd_to_tray.szTip, L"成都天狐威视IVGA");
 	Shell_NotifyIcon(NIM_ADD, &wnd_to_tray);
@@ -303,5 +354,6 @@ void Manager::FillFPSAndQuality()
 
 LRESULT Manager::OnClose(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled)
 {
+	::DestroyWindow(m_hWnd);
 	return 0;
 }

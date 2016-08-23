@@ -14,7 +14,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	
 	CPaintManagerUI::SetInstance(hInstance);
-	CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath() + _T("skin_1"));	
+	CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath() + _T("skin"));	
 
 	Manager manager;
 	IVGAHook ivga_;
@@ -25,6 +25,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	ivga_.SetIvgaKeyboardHook();
 	manager.CenterWindow();
 	manager.ShowModal();
+	//manager.ShowWindow(SW_HIDE);
 	/**/
 
 	return 0;

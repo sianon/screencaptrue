@@ -95,10 +95,6 @@
     <ResourceCompile Include="screen_captrue.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="screen_captrue.ico" />
-    <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="audio_adjust_panel.h" />
     <ClInclude Include="auto_hide_wnd.h" />
     <ClInclude Include="base_window.h" />
@@ -125,6 +121,9 @@
     <ClCompile Include="res_singleton.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="syscfg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Debug\skin\res\logo.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
