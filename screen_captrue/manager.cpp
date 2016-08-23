@@ -300,3 +300,8 @@ void Manager::FillFPSAndQuality()
 	}
 	static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("quality")))->SelectItem(index);
 }
+
+LRESULT Manager::OnClose(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled)
+{
+	return 0;
+}

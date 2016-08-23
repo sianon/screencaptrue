@@ -59,6 +59,7 @@ public:
 
 public:
 	virtual LRESULT OnInit() override;
+	virtual LRESULT OnClose(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled) override;
 
 private:
 	void OptTabInit();
