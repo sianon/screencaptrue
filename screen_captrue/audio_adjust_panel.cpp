@@ -40,7 +40,14 @@ void AudioAdjustPanel::OnSelectChanged(TNotifyUI &msg, bool& handled)
 {
 	if (msg.pSender->GetName() == _T("pop_exit")) {
 		::PostMessage(parent_wnd_, kAM_ExitForPop, 0, 0);
+	} else if (msg.pSender->GetName() == _T("pop_home")) {
+		::PostMessage(parent_wnd_, kAM_MainForPop, 0, 0);
+	} else if (msg.pSender->GetName() == _T("pop_begin")) {
+		::PostMessage(parent_wnd_, kAM_BeginForPop, 0, 0);
+	} else if (msg.pSender->GetName() == _T("pop_end")) {
+		::PostMessage(parent_wnd_, kAM_EndForPop, 0, 0);
 	}
 
+	static_cast<PDUI_RADIOBOX>(msg.pSender)->Selected(false);
 	ShowWindow(SW_HIDE);
 }

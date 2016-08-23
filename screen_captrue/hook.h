@@ -2,7 +2,7 @@
 #define __HOOK_H__
 
 #include "call_ivga_hook.h"
-#include "common_defs.h"
+//#include "common_defs.h"
 
 #pragma comment(lib, "ivga_hook.lib")
 
@@ -40,14 +40,14 @@ public:
 	}
 	BOOL HookKeyboardCallBack(int code, WPARAM wparam, LPARAM lparam)
 	{
-		debugPrintf(_T("KEY_call\n"));
+//		debugPrintf(_T("KEY_call\n"));
 		DWORD keyboard_msg = wparam;
 		KBDLLHOOKSTRUCT* keyboard_info = (KBDLLHOOKSTRUCT*)lparam;
 		DWORD process_id;
 		HWND hwnd = GetForegroundWindow();
 		GetWindowThreadProcessId(hwnd, &process_id);
 		if (process_id_ != process_id){
-			debugPrintf(_T("KEY_return\n"));
+//			debugPrintf(_T("KEY_return\n"));
 			return TRUE;
 		}
 		if (!enable_shortcut_key_ && keyboard_info->vkCode != 0x23)
@@ -59,14 +59,14 @@ public:
 		if (keyboard_msg == WM_KEYUP){
 
 			if (1 == HIBYTE(GetKeyState(VK_LCONTROL)) >> 7)
-				debugPrintf(_T("KEY_ctrl_up\n"));
+//				debugPrintf(_T("KEY_ctrl_up\n"));
 
 			if (1 == HIBYTE(GetKeyState(VK_LCONTROL)) >> 7
 				&& (keyboard_info->vkCode == 0x5a
 				|| keyboard_info->vkCode == 0x58)){
 				if (viewer_)
 					::PostMessage(viewer_, FastKey, keyboard_info->vkCode, 0);
-				debugPrintf(_T("KEY_post\n"));
+//				debugPrintf(_T("KEY_post\n"));
 			}
 		}
 	}

@@ -18,8 +18,12 @@ public:
 	~Manager();
 
 	BEGIN_DUIMSG_MAP(Manager)
+		DUIMSG_HANDLER(kAM_Init, OnInitMsg)
 		DUIMSG_HANDLER(kAM_ShowTaskMsg, OnTray)
 		DUIMSG_HANDLER(kAM_ExitForPop, OnPopMsg)
+		DUIMSG_HANDLER(kAM_MainForPop, OnPopMsg)
+		DUIMSG_HANDLER(kAM_BeginForPop, OnPopMsg)
+		DUIMSG_HANDLER(kAM_EndForPop, OnPopMsg)
 		DUIMSG_HANDLER(FastKey, OnFastKey)
 	END_DUIMSG_MAP()
 
@@ -67,6 +71,7 @@ private:
 	void AVSTabInit();
 
 private:
+	LRESULT OnInitMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
 	LRESULT OnTray(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
 	LRESULT OnPopMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
 	LRESULT OnFastKey(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
