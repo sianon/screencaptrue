@@ -191,7 +191,7 @@ LRESULT Manager::OnFastKey(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandl
 void Manager::OnClickSysBtn(TNotifyUI & msg, bool & handled)
 {
 	if (msg.pSender->GetName() == _T("closebtn")) {
-		ToTray();
+		this->ShowWindow(SW_HIDE);	// 隐藏窗体
 		return;
 	}
 
@@ -312,7 +312,6 @@ void Manager::ToTray()
 
 	wcscpy_s(wnd_to_tray.szTip, L"成都天狐威视IVGA");
 	Shell_NotifyIcon(NIM_ADD, &wnd_to_tray);
-	ShowWindow(SW_HIDE);
 }
 
 void Manager::SetAutoRun(bool bautorun)

@@ -4,6 +4,6 @@
   <push_data dir_name="push123" ipaddr="127.0.0.1" port="554" fps="25" quality="7" />
   <run_state serve="true" client="false" />
   <auto_start attr="false" />
-  <min_start attr="false" />
+  <min_start attr="true" />
   <only_live attr="false" />
 </cfginfo>
