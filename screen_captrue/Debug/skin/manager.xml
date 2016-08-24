@@ -8,7 +8,7 @@
   <StringTable xmlfile="string_table.xml" />
   <VerticalLayout bkcolor="#ff35383f">
     <HorizontalLayout height="30" bkcolor="#ffcd364b" inset="5,1,3,0">
-      <Label name="caption" width="40" text="#system_name" font="2" textcolor="#ff000000" align="vcenter" />
+      <Label name="caption" width="40" text="#system_name" font="2" textcolor="#ffD9D919" align="vcenter" />
       <Control />
       <HorizontalLayout width="70" bkcolor="#" inset="0,6,5,7">
         <Control />

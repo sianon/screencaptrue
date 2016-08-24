@@ -32,7 +32,7 @@ BOOL BaseWindow::OnSysClick(TNotifyUI& msg)
 	}
 	else if (sCtrlName == _T("maxbtn"))
 	{
-		SendMessage(WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+		//SendMessage(WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 		return TRUE;
 	}
 	else if (sCtrlName == _T("restorebtn"))
@@ -109,6 +109,7 @@ LRESULT BaseWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONDOWN:	lRes = OnLButtonDown(uMsg, wParam, lParam, bHandled);	break;
 	case WM_MOUSEMOVE:		lRes = OnMouseMove(uMsg, wParam, lParam, bHandled);		break;
 	case WM_MOUSEHOVER:		lRes = OnMouseHover(uMsg, wParam, lParam, bHandled);	break;
+	case WM_NCLBUTTONDBLCLK: return 0; break;
 	default:				bHandled = FALSE;  break;
 	}
 
