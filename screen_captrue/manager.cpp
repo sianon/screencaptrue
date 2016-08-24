@@ -32,6 +32,7 @@ LRESULT Manager::OnInit()
 
 void Manager::OptTabInit()
 {
+
 }
 
 void Manager::ServeTabInit()
@@ -255,6 +256,8 @@ void Manager::OnTabServeChanged(TNotifyUI & msg, bool & handled)
 	} else if (name == _T("push_dir_edit")) {
 		engine_.SetDir(msg.pSender->GetText(), true);
 	}
+
+	ReloadAddShow();
 }
 
 void Manager::OnTabAVSChanged(TNotifyUI & msg, bool & handled)
@@ -361,6 +364,27 @@ void Manager::FillFPSAndQuality()
 		default: index = 7; break;
 	}
 	static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("quality")))->SelectItem(index);
+}
+
+void Manager::ReloadAddShow()
+{
+	CDuiString addr = _T("访问地址：rtsp://");
+	addr += engine_.GetIpaddr();
+	addr += _T(":");
+	addr += engine_.GetPort();
+	addr += _T("/");
+	addr +=engine_.GetDir();
+	m_PaintManager.FindControl(_T("live_addr_show"))->SetText(addr.GetData());
+
+	addr = _T("推送到：");
+	addr += engine_.GetIpaddr(true);
+	addr += _T("  推送地址：rtsp://");
+	addr += engine_.GetIpaddr(true);
+	addr += _T(":");
+	addr += engine_.GetPort(true);
+	addr += _T("/");
+	addr += engine_.GetDir(true);
+	m_PaintManager.FindControl(_T("push_addr_show"))->SetText(addr.GetData());
 }
 
 LRESULT Manager::OnClose(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled)

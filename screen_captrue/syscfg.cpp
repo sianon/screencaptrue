@@ -150,7 +150,8 @@ LPCTSTR Syscfg::GetQuality(bool is_push /*= false*/)
 		SaveFile();
 	}
 
-	return MultiToWide(attr.as_string());
+	CDuiString ret = MultiToWide(attr.as_string());
+	return ret;
 }
 
 bool Syscfg::SetQuality(LPCTSTR value, bool is_push /*= false*/)
@@ -188,7 +189,8 @@ LPCTSTR Syscfg::GetIpaddr(bool is_push)
 		SaveFile();
 	}
 
-	return MultiToWide(attr.as_string());
+	CDuiString ret = MultiToWide(attr.as_string());
+	return ret;
 }
 
 bool Syscfg::SetIpaddr(LPCTSTR value, bool is_push)
@@ -223,7 +225,8 @@ LPCTSTR Syscfg::GetPort(bool is_push)
 		SaveFile();
 	}
 
-	return MultiToWide(attr.as_string());
+	CDuiString ret = MultiToWide(attr.as_string());
+	return ret;
 }
 
 bool Syscfg::SetPort(LPCTSTR value, bool is_push)
@@ -261,7 +264,8 @@ LPCTSTR Syscfg::GetDir(bool is_push)
 		SaveFile();
 	}
 
-	return MultiToWide(attr.as_string());
+	CDuiString ret = MultiToWide(attr.as_string());
+	return ret;
 }
 
 bool Syscfg::SetDir(LPCTSTR value, bool is_push)
@@ -279,6 +283,36 @@ bool Syscfg::SetDir(LPCTSTR value, bool is_push)
 	attr = WideToMulti(value, multi);
 
 	return SaveFile();
+}
+
+bool Syscfg::GetAutoStart()
+{
+	return false;
+}
+
+bool Syscfg::SetAutoStart(bool value)
+{
+	return false;
+}
+
+bool Syscfg::GetMinStart()
+{
+	return false;
+}
+
+bool Syscfg::SetMinStart(bool value)
+{
+	return false;
+}
+
+bool Syscfg::IsOnlyLive()
+{
+	return false;
+}
+
+bool Syscfg::SetOnlyLive(bool value)
+{
+	return false;
 }
 
 void Syscfg::GetStreamInfo(StreamInfo & info)

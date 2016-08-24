@@ -61,6 +61,15 @@ public:
 	LPCTSTR GetDir(bool is_push = false);
 	bool SetDir(LPCTSTR value, bool is_push = false);
 
+	bool GetAutoStart();
+	bool SetAutoStart(bool value);
+
+	bool GetMinStart();
+	bool SetMinStart(bool value);
+
+	bool IsOnlyLive();
+	bool SetOnlyLive(bool value);
+
 	void GetStreamInfo(StreamInfo & info);
 
 	char * WideToMulti(CDuiString wide, char * multi);

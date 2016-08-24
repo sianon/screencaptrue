@@ -93,6 +93,7 @@ private:
 	void SetAutoRun(bool bautorun);
 	void GetLocalIPAddr(vector<wstring> & id_addr);
 	void FillFPSAndQuality();
+	void ReloadAddShow();
 
 private:
 	//libvlc_instance_t* vlc_;
