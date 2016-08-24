@@ -2,8 +2,6 @@
 #include "manager.h"
 #include "ivga_engine.h"
 #include "hook.h"
-#include "encrypt.h"
-
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,

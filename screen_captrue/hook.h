@@ -69,6 +69,7 @@ public:
 //				debugPrintf(_T("KEY_post\n"));
 			}
 		}
+		return TRUE;
 	}
 private:
 	DWORD process_id_;

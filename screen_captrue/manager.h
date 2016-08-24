@@ -7,6 +7,7 @@
 #include "msg_head.h"
 #include "hook.h"
 #include "ivga_engine.h"
+#include "encrypt.h"
 #include <memory>
 #include <atlbase.h>
 #include <vector>
@@ -40,7 +41,7 @@ public:
 		DUINOTIFY_HANDLER(_T("aboutme_opt"), DUINOTIFY_SELECTCHANGED, OnTabSelectChanged)
 
 		/* options_opt_body 控件变化响应 */
-		
+		DUINOTIFY_HANDLER(_T("auto_start"), DUINOTIFY_SELECTCHANGED, OnAutoRun)
 
 		/* serve_opt_body 控件变化响应 */
 		DUINOTIFY_HANDLER(_T("serve_radio"), DUINOTIFY_SELECTCHANGED, OnTabServeChanged)
@@ -69,6 +70,7 @@ private:
 	void OptTabInit();
 	void ServeTabInit();
 	void AVSTabInit();
+	bool HelpInit();
 
 private:
 	LRESULT OnInitMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
@@ -84,6 +86,7 @@ private:
 	void OnTabOptionsChanged(TNotifyUI &msg, bool &handled);
 	void OnTabServeChanged(TNotifyUI &msg, bool &handled);
 	void OnTabAVSChanged(TNotifyUI &msg, bool &handled);
+	void OnAutoRun(TNotifyUI &msg, bool &handled);
 
 private:
 	void ToTray();
@@ -95,4 +98,5 @@ private:
 	//libvlc_instance_t* vlc_;
 	AudioAdjustPanel audio_panel_;
 	IvgaEngine engine_;
+	Encrypt encpyt_;
 };

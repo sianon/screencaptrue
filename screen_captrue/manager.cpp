@@ -18,12 +18,13 @@ Manager::~Manager()
 
 LRESULT Manager::OnInit()
 {
+	if (!HelpInit())
+		return NULL;
 	engine_.InitStreamInfo();
 
 	OptTabInit();
 	ServeTabInit();
 	AVSTabInit();
-
 	audio_panel_.CreateWithDefaultStyle(m_hWnd);
 	PostMessage(kAM_Init, 0, 0);
 	return 0;
@@ -82,6 +83,16 @@ void Manager::ServeTabInit()
 void Manager::AVSTabInit()
 {
 	FillFPSAndQuality();
+}
+
+bool Manager::HelpInit()
+{
+	if (encpyt_.DoEncrypt(m_PaintManager.FindControl(_T("company"))->GetText()) &&
+		encpyt_.DoEncrypt(m_PaintManager.FindControl(_T("companyweb"))->GetText()))
+		return true;
+	else
+	return false;
+
 }
 
 LRESULT Manager::OnInitMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled)
@@ -356,4 +367,9 @@ LRESULT Manager::OnClose(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled
 {
 	::DestroyWindow(m_hWnd);
 	return 0;
+}
+
+void Manager::OnAutoRun(TNotifyUI &msg, bool &handled)
+{
+	SetAutoRun(static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
 }
