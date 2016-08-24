@@ -17,7 +17,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	Manager manager;
 	IVGAHook ivga_;
 
-	manager.Create(NULL, _T("DUIWnd"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
+	manager.Create(NULL, _T("iVGA"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
 	ivga_.SetViewer(manager);
 	ivga_.SetIvgaInterceptMsg(true);
 	ivga_.SetIvgaKeyboardHook();
