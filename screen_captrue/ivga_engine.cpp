@@ -145,6 +145,36 @@ LPCTSTR IvgaEngine::GetDir(bool is_push /*= false*/)
 	return ret;
 }
 
+bool IvgaEngine::GetAutoStart()
+{
+	return cfg_.GetAutoStart();
+}
+
+bool IvgaEngine::SetAutoStart(bool value)
+{
+	return cfg_.SetAutoStart(value);
+}
+
+bool IvgaEngine::GetMinStart()
+{
+	return cfg_.GetMinStart();
+}
+
+bool IvgaEngine::SetMinStart(bool value)
+{
+	return cfg_.SetMinStart(value);
+}
+
+bool IvgaEngine::IsOnlyLive()
+{
+	return cfg_.IsOnlyLive();
+}
+
+bool IvgaEngine::SetOnlyLive(bool value)
+{
+	return cfg_.SetOnlyLive(value);
+}
+
 void IvgaEngine::StartServe()
 {
 	stream_info_.is_start_serve_ = true;
@@ -183,6 +213,7 @@ void IvgaEngine::OnDestory()
 	libvlc_vlm_stop_media(vlc_, media_name_);
 	libvlc_vlm_release(vlc_);
 }
+
 void IvgaEngine::ProcessServer()
 {
 	string screen_fps("--screen-fps=");

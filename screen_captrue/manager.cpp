@@ -32,7 +32,10 @@ LRESULT Manager::OnInit()
 
 void Manager::OptTabInit()
 {
-
+	static_cast<PDUI_CHECKBOX>(m_PaintManager.FindControl(_T("auto_start")))->Selected(engine_.GetAutoStart());
+	static_cast<PDUI_CHECKBOX>(m_PaintManager.FindControl(_T("min_start")))->Selected(engine_.GetMinStart());
+	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("live")))->Selected(engine_.IsOnlyLive());
+	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("live_and_videos")))->Selected(!engine_.IsOnlyLive());
 }
 
 void Manager::ServeTabInit()
@@ -98,10 +101,23 @@ bool Manager::HelpInit()
 
 LRESULT Manager::OnInitMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled)
 {
+	// ÉèÖÃÍ¼±ê
 	::SendMessage(*this, WM_SETICON, ICON_BIG, (LPARAM)LoadIcon((HINSTANCE)GetWindowLongPtr(m_hWnd, GWLP_HINSTANCE), MAKEINTRESOURCE(IDI_ICON1)));
 	
-	ToTray();
-	this->ShowWindow(SW_HIDE);
+	ToTray();					// Ìí¼ÓÍÐÅÌ
+	
+	if(engine_.GetMinStart())
+		this->ShowWindow(SW_HIDE);	// Òþ²Ø´°Ìå
+
+	if (engine_.GetAutoStart() && engine_.GetMinStart()) {
+		engine_.StartServe();
+		m_PaintManager.FindControl(_T("auto_start"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("min_start"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("live"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("live_and_videos"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("begin_btn"))->SetEnabled(false);
+	}
+
 	return LRESULT();
 }
 
@@ -219,7 +235,20 @@ void Manager::OnTabSelectChanged(TNotifyUI & msg, bool & handled)
 
 void Manager::OnTabOptionsChanged(TNotifyUI & msg, bool & handled)
 {
-
+	CDuiString name = msg.pSender->GetName();
+	if (name == _T("auto_start")) {
+		SetAutoRun(static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
+		engine_.SetAutoStart(static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
+	}
+	else if (name == _T("min_start")) {
+		engine_.SetMinStart(static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
+	}
+	else if (name == _T("live")) {
+		engine_.SetOnlyLive(static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
+	}
+	else if (name == _T("live_and_videos")) {
+		engine_.SetOnlyLive(!static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
+	}
 }
 
 void Manager::OnTabServeChanged(TNotifyUI & msg, bool & handled)

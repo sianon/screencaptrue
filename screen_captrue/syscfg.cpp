@@ -73,6 +73,7 @@ bool Syscfg::GetRunState()
 	if (!node_attr) {
 		node_attr = node.append_attribute("serve");
 		node_attr = true;
+		SaveFile();
 	}
 
 	node_attr = node.attribute("client");
@@ -287,32 +288,71 @@ bool Syscfg::SetDir(LPCTSTR value, bool is_push)
 
 bool Syscfg::GetAutoStart()
 {
-	return false;
+	pugi::xml_node node = GetNode("auto_start");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr) {
+		attr = node.append_attribute("attr");
+		attr = false;
+		SaveFile();
+	}
+	return attr.as_bool();
 }
 
 bool Syscfg::SetAutoStart(bool value)
 {
-	return false;
+	pugi::xml_node node = GetNode("auto_start");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr)
+		attr = node.append_attribute("attr");
+	attr = value;
+
+	return SaveFile();
 }
 
 bool Syscfg::GetMinStart()
 {
-	return false;
+	pugi::xml_node node = GetNode("min_start");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr) {
+		attr = node.append_attribute("attr");
+		attr = false;
+		SaveFile();
+	}
+	return attr.as_bool();
 }
 
 bool Syscfg::SetMinStart(bool value)
 {
-	return false;
+	pugi::xml_node node = GetNode("min_start");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr)
+		attr = node.append_attribute("attr");
+	attr = value;
+
+	return SaveFile();
 }
 
 bool Syscfg::IsOnlyLive()
 {
-	return false;
+	pugi::xml_node node = GetNode("only_live");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr) {
+		attr = node.append_attribute("attr");
+		attr = true;
+		SaveFile();
+	}
+	return attr.as_bool();
 }
 
 bool Syscfg::SetOnlyLive(bool value)
 {
-	return false;
+	pugi::xml_node node = GetNode("only_live");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr)
+		attr = node.append_attribute("attr");
+	attr = value;
+
+	return SaveFile();
 }
 
 void Syscfg::GetStreamInfo(StreamInfo & info)

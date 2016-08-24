@@ -2,7 +2,7 @@
 <cfginfo name="true" version="true">
   <auto_start attr="true" />
   <min_start attr="true" />
-  <is_videos attr="false" />
+  <only_live attr="false" />
   <run_state serve="true" client="false" />
   <serve_data fps="25" quality="0.7" ipaddr="10.18.3.62" port="554" dir_name="live123" />
   <push_data fps="25" quality="0.7" ipaddr="10.18.3.62" port="554" dir_name="live123" />
