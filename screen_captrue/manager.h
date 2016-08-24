@@ -33,6 +33,7 @@ public:
 		DUINOTIFY_HANDLER(_T("closebtn"), DUINOTIFY_CLICK, OnClickSysBtn)
 		DUINOTIFY_HANDLER(_T("begin_btn"), DUINOTIFY_CLICK, OnClickBeginBtn)
 		DUINOTIFY_HANDLER(_T("end_btn"), DUINOTIFY_CLICK, OnClickEndBtn)
+		DUINOTIFY_HANDLER(_T("companyweb"), DUINOTIFY_CLICK, OnOpenWeb)
 
 		/* TabLayout µÄÇÐ»»ÏìÓ¦ */
 		DUINOTIFY_HANDLER(_T("options_opt"),DUINOTIFY_SELECTCHANGED, OnTabSelectChanged)
@@ -87,6 +88,7 @@ private:
 	void OnTabServeChanged(TNotifyUI &msg, bool &handled);
 	void OnTabAVSChanged(TNotifyUI &msg, bool &handled);
 	void OnAutoRun(TNotifyUI &msg, bool &handled);
+	void OnOpenWeb(TNotifyUI &msg, bool &handled);
 
 private:
 	void ToTray();
