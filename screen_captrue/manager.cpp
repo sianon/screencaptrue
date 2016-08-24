@@ -397,3 +397,9 @@ void Manager::OnAutoRun(TNotifyUI &msg, bool &handled)
 {
 	SetAutoRun(static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
 }
+
+void Manager::OnOpenWeb(TNotifyUI &msg, bool &handled)
+{
+	CDuiString web = msg.pSender->GetText();
+	ShellExecute(NULL, L"open", web, NULL, NULL, SW_SHOWNORMAL);
+}
