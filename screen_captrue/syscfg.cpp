@@ -73,6 +73,7 @@ bool Syscfg::GetRunState()
 	if (!node_attr) {
 		node_attr = node.append_attribute("serve");
 		node_attr = true;
+		SaveFile();
 	}
 
 	node_attr = node.attribute("client");
@@ -150,7 +151,8 @@ LPCTSTR Syscfg::GetQuality(bool is_push /*= false*/)
 		SaveFile();
 	}
 
-	return MultiToWide(attr.as_string());
+	CDuiString ret = MultiToWide(attr.as_string());
+	return ret;
 }
 
 bool Syscfg::SetQuality(LPCTSTR value, bool is_push /*= false*/)
@@ -188,7 +190,8 @@ LPCTSTR Syscfg::GetIpaddr(bool is_push)
 		SaveFile();
 	}
 
-	return MultiToWide(attr.as_string());
+	CDuiString ret = MultiToWide(attr.as_string());
+	return ret;
 }
 
 bool Syscfg::SetIpaddr(LPCTSTR value, bool is_push)
@@ -223,7 +226,8 @@ LPCTSTR Syscfg::GetPort(bool is_push)
 		SaveFile();
 	}
 
-	return MultiToWide(attr.as_string());
+	CDuiString ret = MultiToWide(attr.as_string());
+	return ret;
 }
 
 bool Syscfg::SetPort(LPCTSTR value, bool is_push)
@@ -261,7 +265,8 @@ LPCTSTR Syscfg::GetDir(bool is_push)
 		SaveFile();
 	}
 
-	return MultiToWide(attr.as_string());
+	CDuiString ret = MultiToWide(attr.as_string());
+	return ret;
 }
 
 bool Syscfg::SetDir(LPCTSTR value, bool is_push)
@@ -277,6 +282,75 @@ bool Syscfg::SetDir(LPCTSTR value, bool is_push)
 		attr = node.append_attribute("dir_name");
 	char multi[MAX_PATH];
 	attr = WideToMulti(value, multi);
+
+	return SaveFile();
+}
+
+bool Syscfg::GetAutoStart()
+{
+	pugi::xml_node node = GetNode("auto_start");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr) {
+		attr = node.append_attribute("attr");
+		attr = false;
+		SaveFile();
+	}
+	return attr.as_bool();
+}
+
+bool Syscfg::SetAutoStart(bool value)
+{
+	pugi::xml_node node = GetNode("auto_start");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr)
+		attr = node.append_attribute("attr");
+	attr = value;
+
+	return SaveFile();
+}
+
+bool Syscfg::GetMinStart()
+{
+	pugi::xml_node node = GetNode("min_start");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr) {
+		attr = node.append_attribute("attr");
+		attr = false;
+		SaveFile();
+	}
+	return attr.as_bool();
+}
+
+bool Syscfg::SetMinStart(bool value)
+{
+	pugi::xml_node node = GetNode("min_start");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr)
+		attr = node.append_attribute("attr");
+	attr = value;
+
+	return SaveFile();
+}
+
+bool Syscfg::IsOnlyLive()
+{
+	pugi::xml_node node = GetNode("only_live");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr) {
+		attr = node.append_attribute("attr");
+		attr = true;
+		SaveFile();
+	}
+	return attr.as_bool();
+}
+
+bool Syscfg::SetOnlyLive(bool value)
+{
+	pugi::xml_node node = GetNode("only_live");
+	pugi::xml_attribute attr = node.attribute("attr");
+	if (!attr)
+		attr = node.append_attribute("attr");
+	attr = value;
 
 	return SaveFile();
 }

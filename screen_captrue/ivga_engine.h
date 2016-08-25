@@ -62,6 +62,15 @@ public:
 	void SetDir(LPCTSTR value, bool is_push = false);
 	LPCTSTR GetDir(bool is_push = false);
 
+	bool GetAutoStart();
+	bool SetAutoStart(bool value);
+
+	bool GetMinStart();
+	bool SetMinStart(bool value);
+
+	bool IsOnlyLive();
+	bool SetOnlyLive(bool value);
+
 	std::unique_ptr<IVGAHook> keyboard_Hook_;
 private:
 	void ProcessServer();

@@ -42,7 +42,10 @@ public:
 		DUINOTIFY_HANDLER(_T("aboutme_opt"), DUINOTIFY_SELECTCHANGED, OnTabSelectChanged)
 
 		/* options_opt_body 控件变化响应 */
-		DUINOTIFY_HANDLER(_T("auto_start"), DUINOTIFY_SELECTCHANGED, OnAutoRun)
+		DUINOTIFY_HANDLER(_T("auto_start"), DUINOTIFY_SELECTCHANGED, OnTabOptionsChanged)
+		DUINOTIFY_HANDLER(_T("min_start"), DUINOTIFY_SELECTCHANGED, OnTabOptionsChanged)
+		DUINOTIFY_HANDLER(_T("live"), DUINOTIFY_SELECTCHANGED, OnTabOptionsChanged)
+		DUINOTIFY_HANDLER(_T("live_and_videos"), DUINOTIFY_SELECTCHANGED, OnTabOptionsChanged)
 
 		/* serve_opt_body 控件变化响应 */
 		DUINOTIFY_HANDLER(_T("serve_radio"), DUINOTIFY_SELECTCHANGED, OnTabServeChanged)
@@ -95,6 +98,7 @@ private:
 	void SetAutoRun(bool bautorun);
 	void GetLocalIPAddr(vector<wstring> & id_addr);
 	void FillFPSAndQuality();
+	void ReloadAddShow();
 
 private:
 	//libvlc_instance_t* vlc_;

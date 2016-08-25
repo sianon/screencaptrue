@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <StringTable>
 	<String id="system_name" text="iVGA" />
+	<String id="minimize" text="最小化" />
 	<String id="option" text="选项" />
 	<String id="serve_setup" text="服务设置" />
 	<String id="AVS" text="音视频" />

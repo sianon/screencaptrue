@@ -32,6 +32,10 @@ LRESULT Manager::OnInit()
 
 void Manager::OptTabInit()
 {
+	static_cast<PDUI_CHECKBOX>(m_PaintManager.FindControl(_T("auto_start")))->Selected(engine_.GetAutoStart());
+	static_cast<PDUI_CHECKBOX>(m_PaintManager.FindControl(_T("min_start")))->Selected(engine_.GetMinStart());
+	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("live")))->Selected(engine_.IsOnlyLive());
+	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("live_and_videos")))->Selected(!engine_.IsOnlyLive());
 }
 
 void Manager::ServeTabInit()
@@ -97,10 +101,23 @@ bool Manager::HelpInit()
 
 LRESULT Manager::OnInitMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL & bHandled)
 {
+	// 设置图标
 	::SendMessage(*this, WM_SETICON, ICON_BIG, (LPARAM)LoadIcon((HINSTANCE)GetWindowLongPtr(m_hWnd, GWLP_HINSTANCE), MAKEINTRESOURCE(IDI_ICON1)));
 	
-	ToTray();
-	this->ShowWindow(SW_HIDE);
+	ToTray();					// 添加托盘
+	
+	if(engine_.GetMinStart())
+		this->ShowWindow(SW_HIDE);	// 隐藏窗体
+
+	if (engine_.GetAutoStart() && engine_.GetMinStart()) {
+		engine_.StartServe();
+		m_PaintManager.FindControl(_T("auto_start"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("min_start"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("live"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("live_and_videos"))->SetEnabled(false);
+		m_PaintManager.FindControl(_T("begin_btn"))->SetEnabled(false);
+	}
+
 	return LRESULT();
 }
 
@@ -174,7 +191,7 @@ LRESULT Manager::OnFastKey(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandl
 void Manager::OnClickSysBtn(TNotifyUI & msg, bool & handled)
 {
 	if (msg.pSender->GetName() == _T("closebtn")) {
-		ToTray();
+		this->ShowWindow(SW_HIDE);	// 隐藏窗体
 		return;
 	}
 
@@ -218,7 +235,20 @@ void Manager::OnTabSelectChanged(TNotifyUI & msg, bool & handled)
 
 void Manager::OnTabOptionsChanged(TNotifyUI & msg, bool & handled)
 {
-
+	CDuiString name = msg.pSender->GetName();
+	if (name == _T("auto_start")) {
+		SetAutoRun(static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
+		engine_.SetAutoStart(static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
+	}
+	else if (name == _T("min_start")) {
+		engine_.SetMinStart(static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
+	}
+	else if (name == _T("live")) {
+		engine_.SetOnlyLive(static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
+	}
+	else if (name == _T("live_and_videos")) {
+		engine_.SetOnlyLive(!static_cast<PDUI_CHECKBOX>(msg.pSender)->IsSelected());
+	}
 }
 
 void Manager::OnTabServeChanged(TNotifyUI & msg, bool & handled)
@@ -255,6 +285,8 @@ void Manager::OnTabServeChanged(TNotifyUI & msg, bool & handled)
 	} else if (name == _T("push_dir_edit")) {
 		engine_.SetDir(msg.pSender->GetText(), true);
 	}
+
+	ReloadAddShow();
 }
 
 void Manager::OnTabAVSChanged(TNotifyUI & msg, bool & handled)
@@ -280,7 +312,6 @@ void Manager::ToTray()
 
 	wcscpy_s(wnd_to_tray.szTip, L"成都天狐威视IVGA");
 	Shell_NotifyIcon(NIM_ADD, &wnd_to_tray);
-	ShowWindow(SW_HIDE);
 }
 
 void Manager::SetAutoRun(bool bautorun)
@@ -361,6 +392,27 @@ void Manager::FillFPSAndQuality()
 		default: index = 7; break;
 	}
 	static_cast<PDUI_COMBO>(m_PaintManager.FindControl(_T("quality")))->SelectItem(index);
+}
+
+void Manager::ReloadAddShow()
+{
+	CDuiString addr = _T("访问地址：rtsp://");
+	addr += engine_.GetIpaddr();
+	addr += _T(":");
+	addr += engine_.GetPort();
+	addr += _T("/");
+	addr +=engine_.GetDir();
+	m_PaintManager.FindControl(_T("live_addr_show"))->SetText(addr.GetData());
+
+	addr = _T("推送到：");
+	addr += engine_.GetIpaddr(true);
+	addr += _T("  推送地址：rtsp://");
+	addr += engine_.GetIpaddr(true);
+	addr += _T(":");
+	addr += engine_.GetPort(true);
+	addr += _T("/");
+	addr += engine_.GetDir(true);
+	m_PaintManager.FindControl(_T("push_addr_show"))->SetText(addr.GetData());
 }
 
 LRESULT Manager::OnClose(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled)
