@@ -71,9 +71,9 @@
                   <Control mouse="false" float="true" pos="-26,8,-15,19" bkimage="file='res\triangle.png'" />
                 </Container>
                 <Control width="5" />
-                <Edit name="live_port_edit" width="50" text="" />
+                <Edit name="live_port_edit" width="50" numberonly="true" text="" />
                 <Control width="5" />
-                <Edit name="live_dir_edit" width="80" text="" />
+                <Edit name="live_dir_edit" width="80" maxchar="16" text="" />
               </HorizontalLayout>
               <Control />
               <Label name="live_addr_show" height="15" text="访问地址：rtsp://10.18.3.10:55/live123" align="vcenter" />
@@ -94,9 +94,9 @@
                 <Label text="#address" width="35" />
                 <Edit name="push_address" />
                 <Control width="5" />
-                <Edit name="push_port_edit" width="50" text="" />
+                <Edit name="push_port_edit" width="50" numberonly="true" text="" />
                 <Control width="5" />
-                <Edit name="push_dir_edit" width="80" text="" />
+                <Edit name="push_dir_edit" width="80" maxchar="16" text="" />
               </HorizontalLayout>
               <Control />
               <Label name="push_addr_show" height="15" text="推送到18.18.8.11   访问地址：rtsp://18.18.8.11:554/live123" align="vcenter" />

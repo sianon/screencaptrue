@@ -21,7 +21,7 @@ using namespace DuiLib;
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
-
+#include <atlbase.h>
 
 // TODO: reference additional headers your program requires here
 #ifdef NDEBUG

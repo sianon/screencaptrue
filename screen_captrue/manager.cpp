@@ -63,25 +63,31 @@ void Manager::ServeTabInit()
 		live_addr_combo->SelectItem(0);
 	}
 
+	CDuiString temp = _T("");
 	bool is_start_serve = engine_.GetIsServerState();
 	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("serve_radio")))->Selected(is_start_serve);
 	static_cast<PDUI_RADIOBOX>(m_PaintManager.FindControl(_T("push_radio")))->Selected(!is_start_serve);
 	m_PaintManager.FindControl(_T("live_address"))->SetEnabled(is_start_serve);
 
 	m_PaintManager.FindControl(_T("live_port_edit"))->SetEnabled(is_start_serve);
-	m_PaintManager.FindControl(_T("live_port_edit"))->SetText(engine_.GetPort());
+	temp = engine_.GetPort();
+	m_PaintManager.FindControl(_T("live_port_edit"))->SetText(temp.GetData());
 
 	m_PaintManager.FindControl(_T("live_dir_edit"))->SetEnabled(is_start_serve);
-	m_PaintManager.FindControl(_T("live_dir_edit"))->SetText(engine_.GetDir());
+	temp = engine_.GetDir();
+	m_PaintManager.FindControl(_T("live_dir_edit"))->SetText(temp.GetData());
 
 	m_PaintManager.FindControl(_T("push_address"))->SetEnabled(!is_start_serve);
-	m_PaintManager.FindControl(_T("push_address"))->SetText(engine_.GetIpaddr(true));
+	temp = engine_.GetIpaddr(true);
+	m_PaintManager.FindControl(_T("push_address"))->SetText(temp.GetData());
 
 	m_PaintManager.FindControl(_T("push_port_edit"))->SetEnabled(!is_start_serve);
-	m_PaintManager.FindControl(_T("push_port_edit"))->SetText(engine_.GetPort(true));
+	temp = engine_.GetPort(true);
+	m_PaintManager.FindControl(_T("push_port_edit"))->SetText(temp.GetData());
 
 	m_PaintManager.FindControl(_T("push_dir_edit"))->SetEnabled(!is_start_serve);
-	m_PaintManager.FindControl(_T("push_dir_edit"))->SetText(engine_.GetDir(true));
+	temp = engine_.GetDir(true);
+	m_PaintManager.FindControl(_T("push_dir_edit"))->SetText(temp.GetData());
 }
 
 void Manager::AVSTabInit()
@@ -396,23 +402,19 @@ void Manager::FillFPSAndQuality()
 
 void Manager::ReloadAddShow()
 {
-	CDuiString addr = _T("访问地址：rtsp://");
-	addr += engine_.GetIpaddr();
-	addr += _T(":");
-	addr += engine_.GetPort();
-	addr += _T("/");
-	addr +=engine_.GetDir();
-	m_PaintManager.FindControl(_T("live_addr_show"))->SetText(addr.GetData());
+	CDuiString live_addr = _T("访问地址：rtsp://");
+	CDuiString live_ip = engine_.GetIpaddr();
+	CDuiString live_port = engine_.GetPort();
+	CDuiString live_dir = engine_.GetDir();
+	live_addr += live_ip + _T(":") + live_port + _T("/") + live_dir;
+	m_PaintManager.FindControl(_T("live_addr_show"))->SetText(live_addr.GetData());
 
-	addr = _T("推送到：");
-	addr += engine_.GetIpaddr(true);
-	addr += _T("  推送地址：udp://");
-	addr += engine_.GetIpaddr(true);
-	addr += _T(":");
-	addr += engine_.GetPort(true);
-	addr += _T("/");
-	addr += engine_.GetDir(true);
-	m_PaintManager.FindControl(_T("push_addr_show"))->SetText(addr.GetData());
+	CDuiString push_addr = _T("推送到：");
+	CDuiString push_ip = engine_.GetIpaddr(true);
+	CDuiString push_port = engine_.GetPort(true);
+	CDuiString push_dir = engine_.GetDir(true);
+	push_addr += push_ip + _T("  推送地址：rtsp://") + push_ip + _T(":") + push_port + _T("/") + push_dir;
+	m_PaintManager.FindControl(_T("push_addr_show"))->SetText(push_addr.GetData());
 }
 
 LRESULT Manager::OnClose(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled)

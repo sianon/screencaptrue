@@ -6,7 +6,6 @@
 #include "hook.h"
 #include "syscfg.h"
 #include <vector>
-#include <atlbase.h>
 #include <memory>
 
 class IvgaEngine
