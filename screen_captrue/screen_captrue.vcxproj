@@ -60,7 +60,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <StringPooling>false</StringPooling>
     </ClCompile>
     <Link>
@@ -101,6 +101,7 @@
     <ClInclude Include="auto_hide_wnd.h" />
     <ClInclude Include="base_window.h" />
     <ClInclude Include="common_defs.h" />
+    <ClInclude Include="CryptKeyUtils.h" />
     <ClInclude Include="encrypt.h" />
     <ClInclude Include="hook.h" />
     <ClInclude Include="ivga_engine.h" />
