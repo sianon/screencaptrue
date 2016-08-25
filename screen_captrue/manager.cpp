@@ -406,7 +406,7 @@ void Manager::ReloadAddShow()
 
 	addr = _T("推送到：");
 	addr += engine_.GetIpaddr(true);
-	addr += _T("  推送地址：rtsp://");
+	addr += _T("  推送地址：udp://");
 	addr += engine_.GetIpaddr(true);
 	addr += _T(":");
 	addr += engine_.GetPort(true);
