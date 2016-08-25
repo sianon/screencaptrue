@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="CryptKeyUtils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Release">
+      <UniqueIdentifier>{e5bfda08-c217-409d-a054-ec4cfa29fc29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{aef3657c-1e20-4a63-974e-93bed159d550}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Debug\CryptKeyUtils.lib">
+      <Filter>Debug</Filter>
+    </Library>
+    <Library Include="Release\CryptKeyUtils.lib">
+      <Filter>Release</Filter>
+    </Library>
+  </ItemGroup>
+</Project>
