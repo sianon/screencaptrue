@@ -200,7 +200,7 @@
                 <Control mouse="false" float="true" pos="-26,11,-15,22" bkimage="file='res\triangle.png'" />
               </Container>
               <Control width="10" />
-              <Button name="" width="50" text="#set_up" hottextcolor="#ffff0000" normalimage="file='res\btn_bk.png'" bkcolor="#" hotbkcolor="#" />
+              <Button name="" width="50" text="#set_up" normalimage="file='res\btn_bk.png'" bkcolor="#" hotbkcolor="#" />
             </HorizontalLayout>
             <Control />
           </VerticalLayout>
@@ -211,7 +211,7 @@
         <VerticalLayout comment="aboutme_opt_body">
           <Control />
           <Label name="company" text="成都天狐威视有限公司 版权所有" align="vcenter" font="3" />
-          <Button name="companyweb" text="http://www.tingfox.com" bkcolor="#" hotbkcolor="#" pushedtextcolor="#ffcd364b" align="vcenter" font="3" />
+          <Button name="companyweb" text="http://www.tingfox.com" bkcolor="#" hotbkcolor="#" hottextcolor="#ffcd364b" pushedtextcolor="#ffcd364b" align="vcenter" font="3" />
           <Control />
           <Label text="特别声明：" align="vcenter" font="3" />
           <Label text="本软件为免费软件，由大学生创业团队完成。" align="vcenter" font="3" />
