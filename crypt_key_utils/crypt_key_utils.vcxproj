@@ -11,19 +11,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4098C22B-192E-46F1-808F-F39F727847DE}</ProjectGuid>
+    <ProjectGuid>{DAFF9197-1058-4BA5-AB99-B974DBABD7B2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>screen_captrue</RootNamespace>
+    <RootNamespace>crypt_key_utils</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -41,92 +41,60 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProJectDir)../third_party/duilib;$(ProJectDir)/libvlc_include;$(ProJectDir)../third_party/pugixml;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProJectDir)../third_party/libs;$(ProJectDir)/libvlc_lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(ProJectDir)\Debug\</OutDir>
-    <IntDir>$(Configuration)\obj</IntDir>
+    <OutDir>$(ProjectDir)..\..\build\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)obj\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\;$(ProJectDir)../third_party/duilib;$(ProJectDir)/libvlc_include;$(ProJectDir)../third_party/pugixml;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProJectDir)../third_party/libs;$(ProJectDir)/libvlc_lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(ProJectDir)\Release\</OutDir>
-    <IntDir>$(Configuration)\obj</IntDir>
+    <OutDir>$(ProjectDir)..\..\build\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)obj\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <StringPooling>false</StringPooling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libvlc.lib;libvlccore.lib;MHWIN32C.OBJ;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy $(ProjectDir)Debug\CryptKeyUtils.lib $(ProjectDir)..\..\libs\Debug\
+copy $(ProjectDir)Debug\MHWIN32C.x $(ProjectDir)..\..\libs\Debug\MHWIN32C.OBJ</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <StringPooling>false</StringPooling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>libvlc.lib;libvlccore.lib;MHWIN32C.OBJ;%(AdditionalDependencies)</AdditionalDependencies>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
+    <PostBuildEvent>
+      <Command>copy $(ProjectDir)Release\CryptKeyUtils.lib $(ProjectDir)..\..\libs\Release\
+copy $(ProjectDir)Release\MHWIN32C.x $(ProjectDir)..\..\libs\Release\MHWIN32C.OBJ</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="screen_captrue.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="audio_adjust_panel.h" />
-    <ClInclude Include="auto_hide_wnd.h" />
-    <ClInclude Include="base_window.h" />
-    <ClInclude Include="common_defs.h" />
     <ClInclude Include="CryptKeyUtils.h" />
-    <ClInclude Include="encrypt.h" />
-    <ClInclude Include="hook.h" />
-    <ClInclude Include="ivga_engine.h" />
-    <ClInclude Include="manager.h" />
-    <ClInclude Include="msg_head.h" />
-    <ClInclude Include="native_control_ui.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="res_singleton.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="syscfg.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="audio_adjust_panel.cpp" />
-    <ClCompile Include="base_window.cpp" />
-    <ClCompile Include="ivga.cpp" />
-    <ClCompile Include="ivga_engine.cpp" />
-    <ClCompile Include="manager.cpp" />
-    <ClCompile Include="native_control_ui.cpp" />
-    <ClCompile Include="res_singleton.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="syscfg.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Debug\skin\res\logo.ico" />
+    <Library Include="Debug\CryptKeyUtils.lib" />
+    <Library Include="Release\CryptKeyUtils.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
