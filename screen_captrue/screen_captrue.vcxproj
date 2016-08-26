@@ -44,7 +44,7 @@
     <IncludePath>$(ProJectDir)../third_party/duilib;$(ProJectDir)/libvlc_include;$(ProJectDir)../third_party/pugixml;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProJectDir)../third_party/libs;$(ProJectDir)/libvlc_lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(ProJectDir)\Debug\</OutDir>
-    <IntDir>$(Configuration)\obj</IntDir>
+    <IntDir>$(Configuration)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

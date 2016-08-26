@@ -180,8 +180,15 @@ LRESULT Manager::OnFastKey(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandl
 	{
 	case 0x5a:
 	{
-		engine_.StartServe();
-		ControlEnable(false);
+		if (engine_.GetIsServerState()){
+			engine_.StartServe();
+			//SendMessage(WM_SYSCOMMAND, SC_MINIMIZE, 0);
+			ControlEnable(false);
+		}
+		else{
+			engine_.StartClient();
+			ControlEnable(false);
+		}
 	}
 	break;
 	case 0x58:
@@ -208,23 +215,20 @@ void Manager::OnClickSysBtn(TNotifyUI & msg, bool & handled)
 
 void Manager::OnClickBeginBtn(TNotifyUI & msg, bool & handled)
 {
-	engine_.StartServe();
-	SendMessage(WM_SYSCOMMAND, SC_MINIMIZE, 0);
-	m_PaintManager.FindControl(_T("auto_start"))->SetEnabled(false);
-	m_PaintManager.FindControl(_T("min_start"))->SetEnabled(false);
-	m_PaintManager.FindControl(_T("live"))->SetEnabled(false);
-	m_PaintManager.FindControl(_T("live_and_videos"))->SetEnabled(false);
-	m_PaintManager.FindControl(_T("begin_btn"))->SetEnabled(false);
+	if (engine_.GetIsServerState()){
+		engine_.StartServe();
+		//SendMessage(WM_SYSCOMMAND, SC_MINIMIZE, 0);
+		ControlEnable(false);
+	} else{
+		engine_.StartClient();
+		ControlEnable(false);
+	}
 }
 
 void Manager::OnClickEndBtn(TNotifyUI & msg, bool & handled)
 {
 	engine_.OnDestory();
-	m_PaintManager.FindControl(_T("auto_start"))->SetEnabled(true);
-	m_PaintManager.FindControl(_T("min_start"))->SetEnabled(true);
-	m_PaintManager.FindControl(_T("live"))->SetEnabled(true);
-	m_PaintManager.FindControl(_T("live_and_videos"))->SetEnabled(true);
-	m_PaintManager.FindControl(_T("begin_btn"))->SetEnabled(true);
+	ControlEnable(true);
 }
 
 void Manager::OnTabSelectChanged(TNotifyUI & msg, bool & handled)
@@ -415,7 +419,7 @@ void Manager::ReloadAddShow()
 	CDuiString push_ip = engine_.GetIpaddr(true);
 	CDuiString push_port = engine_.GetPort(true);
 	CDuiString push_dir = engine_.GetDir(true);
-	push_addr += push_ip + _T("  推送地址：rtsp://") + push_ip + _T(":") + push_port + _T("/") + push_dir;
+	push_addr += push_ip + _T("  推送地址：udp://") + push_ip + _T(":") + push_port + _T("/") + push_dir;
 	m_PaintManager.FindControl(_T("push_addr_show"))->SetText(push_addr.GetData());
 }
 

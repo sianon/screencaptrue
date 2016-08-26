@@ -2,7 +2,7 @@
 #include "manager.h"
 #include "ivga_engine.h"
 #include "hook.h"
-#include "crypt_key_utils/CryptKeyUtils.h"
+#include "CryptKeyUtils.h"
 #pragma comment(lib, "CryptKeyUtils.lib")
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
