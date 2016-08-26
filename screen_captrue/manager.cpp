@@ -181,11 +181,13 @@ LRESULT Manager::OnFastKey(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandl
 	case 0x5a:
 	{
 		engine_.StartServe();
+		ControlEnable(false);
 	}
 	break;
 	case 0x58:
 	{
 		engine_.OnDestory();
+		ControlEnable(true);
 	}
 	default:
 		break;
@@ -432,4 +434,13 @@ void Manager::OnOpenWeb(TNotifyUI &msg, bool &handled)
 {
 	CDuiString web = msg.pSender->GetText();
 	ShellExecute(NULL, L"open", web, NULL, NULL, SW_SHOWNORMAL);
+}
+
+void Manager::ControlEnable(bool benable)
+{
+	m_PaintManager.FindControl(_T("auto_start"))->SetEnabled(benable);
+	m_PaintManager.FindControl(_T("min_start"))->SetEnabled(benable);
+	m_PaintManager.FindControl(_T("live"))->SetEnabled(benable);
+	m_PaintManager.FindControl(_T("live_and_videos"))->SetEnabled(benable);
+	m_PaintManager.FindControl(_T("begin_btn"))->SetEnabled(benable);
 }

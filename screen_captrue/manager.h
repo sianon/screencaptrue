@@ -75,6 +75,7 @@ private:
 	void ServeTabInit();
 	void AVSTabInit();
 	bool HelpInit();
+	void ControlEnable(bool benable);
 
 private:
 	LRESULT OnInitMsg(UINT uMsg, WPARAM wparam, LPARAM lparam, BOOL& bHandled);
