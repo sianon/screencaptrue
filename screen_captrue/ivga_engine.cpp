@@ -224,6 +224,7 @@ void IvgaEngine::ProcessServer()
 	const char * const argv[] = {
 		screen_fps.c_str(),
 		"--screen-follow-mouse",
+		"--live-caching=300",
 	};
 
 	const char* url = "Screen://";
