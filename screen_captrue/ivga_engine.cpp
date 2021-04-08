@@ -101,6 +101,7 @@ LPCTSTR IvgaEngine::GetIpaddr(bool is_push /*= false*/)
 		stream_info_.ip_push_ = ret;
 
 	int x = 1;
+	int x = 2;
 	return ret;
 }
 
