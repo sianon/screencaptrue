@@ -2,8 +2,6 @@
 #include "manager.h"
 #include "ivga_engine.h"
 #include "hook.h"
-#include "CryptKeyUtils.h"
-#pragma comment(lib, "CryptKeyUtils.lib")
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -23,7 +21,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		if (!_tfopen_s(&file, default_x_path, _T("rb"))) {
 			BYTE buf[256 * 1024];
 			unsigned len = fread(buf, sizeof(BYTE), 256 * 1024, file);
-			len = Crypt("KINGHOO", buf, len, buf, 256 * 1024, FALSE);
 			fclose(file);
 			CPaintManagerUI::SetResourceZip(buf, len);
 			CPaintManagerUI::SetForceUseLocalResourceFile(true, false, true);
