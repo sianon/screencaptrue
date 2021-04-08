@@ -111,6 +111,7 @@ void IvgaEngine::SetPort(LPCTSTR value, bool is_push /*= false*/)
 	else
 		stream_info_.port_push_ = value;
 	cfg_.SetPort(value, is_push);
+	int x = 3;
 }
 
 LPCTSTR IvgaEngine::GetPort(bool is_push /*= false*/)
